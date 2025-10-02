@@ -148,6 +148,13 @@ class VA_Assets_Manager {
             null
         );
         
+        wp_enqueue_style(
+            'google-fonts-inter',
+            'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+            [],
+            null
+        );
+
         // Font Awesome
         wp_enqueue_style(
             'font-awesome',
@@ -180,6 +187,7 @@ class VA_Assets_Manager {
             'patients-module' => 'modules/patients-module.css',
             'unified-modals' => 'unified-modals.css',
             'catalog-module' => 'modules/catalog-module.css',
+            'modals' => 'modals.css', // Nuevos estilos para modales
         ];
         
         foreach ($modules_styles as $handle => $path) {
@@ -206,6 +214,7 @@ class VA_Assets_Manager {
             'patients-module' => 'modules/patients-module.js',
             'catalog-module' => 'modules/catalog-module.js',
             'agenda-wizard' => 'modules/agenda-wizard.js',
+            'modals' => 'modals.js', // Nuevo script para la lógica de modales
         ];
         
         foreach ($modules_scripts as $handle => $path) {
