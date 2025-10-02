@@ -1,0 +1,163 @@
+/* assets/css/module-appointments.css */
+/* VERSIÓN 4.5 - DISEÑO HÍBRIDO FINAL */
+
+/* === 2. Tarjeta de Cita v4.5 (Estilos de Escritorio) === */
+.dashboard-container .appointments-grid { display: grid; gap: 1.5rem; }
+.dashboard-container .appointment-card-vision { width: 100%; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); overflow: hidden; display: flex; transition: all 0.2s ease-in-out; }
+.dashboard-container .appointment-card-vision:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+
+/* Bloque Fecha (Escritorio) */
+.dashboard-container .appointment-card__date-block { width: 25%; max-width: 120px; color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem 1rem; text-align: center; transition: background-color 0.3s ease; }
+.dashboard-container .date-block__day { font-size: 2rem; font-weight: 700; line-height: 1; margin: 0; }
+.dashboard-container .date-block__month { font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; margin: 0.25rem 0 0 0; }
+.dashboard-container .date-block__separator { width: 3rem; height: 1px; background-color: rgba(255, 255, 255, 0.5); margin: 0.75rem 0; }
+.dashboard-container .date-block__time { font-size: 1.125rem; font-weight: 600; margin: 0; }
+
+/* Colores dinámicos para el bloque de fecha por estado */
+.dashboard-container .appointment-card-vision.status-pending .appointment-card__date-block { background-color: #D97706; }
+.dashboard-container .appointment-card-vision.status-confirmed .appointment-card__date-block { background-color: var(--color-green); }
+.dashboard-container .appointment-card-vision.status-completed .appointment-card__date-block { background-color: var(--color-blue); }
+.dashboard-container .appointment-card-vision.status-cancelled .appointment-card__date-block { background-color: var(--color-red); }
+
+/* Bloque Información (Escritorio) */
+.dashboard-container .appointment-card__info-block { width: 75%; flex-grow: 1; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; }
+.dashboard-container .main-content__service-name { font-size: 1.25rem; font-weight: 700; color: var(--color-slate-dark); margin: 0 0 1rem 0; }
+.dashboard-container .main-content__client-wrapper { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.dashboard-container .client-avatar { flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%; background-color: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; }
+.dashboard-container .client-details { line-height: 1.4; }
+.dashboard-container .owner-name { font-size: 1rem; font-weight: 700; color: var(--color-text-dark); margin: 0; }
+.dashboard-container .pet-info { font-size: 0.9rem; color: var(--color-text-gray); margin: 0.1rem 0 0 0; }
+.dashboard-container .main-content__contact-info { font-size: 0.875rem; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); }
+.dashboard-container .contact-info__item { display: flex; align-items: center; text-decoration: none; }
+.dashboard-container .contact-info__icon { width: 1.25rem; text-align: center; color: #94a3b8; }
+.dashboard-container .contact-info__icon.fa-whatsapp { color: #25d366; }
+.dashboard-container .contact-info__text { margin-left: 0.5rem; color: #475569; }
+.dashboard-container a.contact-info__item:hover .contact-info__text { text-decoration: underline; }
+
+/* Barra de Acciones (Escritorio) */
+.dashboard-container .info-block__actions-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.dashboard-container .actions-bar__comments-button { background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer; transition: color 0.2s ease; }
+.dashboard-container .actions-bar__comments-button:hover { color: var(--color-slate-dark); }
+.dashboard-container .actions-bar__button-group { display: flex; align-items: center; gap: 0.75rem; }
+.dashboard-container .actions-bar__cancel-button, .dashboard-container .actions-bar__confirm-button { border: none; font-size: 0.875rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+.dashboard-container .actions-bar__cancel-button { background-color: transparent; color: #64748b; }
+.dashboard-container .actions-bar__cancel-button:hover { background-color: #f1f5f9; color: var(--color-red); }
+.dashboard-container .actions-bar__confirm-button { background-color: var(--color-slate-dark); color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.dashboard-container .actions-bar__confirm-button:hover { background-color: #334155; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+
+/* === 3. Modal de Notas (Tu Diseño Implementado) === */
+.dashboard-container .appointment-notes-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* bg-black bg-opacity-50 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    padding: 1rem;
+}
+
+.dashboard-container .appointment-notes-modal.hidden {
+    display: none;
+}
+
+.dashboard-container .notes-content {
+    background-color: var(--color-white);
+    width: 100%;
+    max-width: 400px; /* max-w-sm */
+    padding: 1.5rem; /* p-6 */
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    /* Estilos iniciales para la animación */
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+/* Clases para la animación de entrada/salida */
+.dashboard-container .notes-content.modal-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 300ms ease-out;
+}
+.dashboard-container .notes-content.modal-leave-active {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 300ms ease-in;
+}
+
+.dashboard-container .modal-icon-container {
+    margin: 0 auto 1rem; /* mx-auto mb-4 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem; /* h-16 */
+    width: 4rem; /* w-16 */
+    border-radius: 9999px; /* rounded-full */
+    background-color: #f1f5f9; /* bg-slate-100 */
+}
+
+.dashboard-container .modal-icon-container i {
+    font-size: 2rem; /* fa-2x */
+    color: #475569; /* text-slate-600 */
+}
+
+.dashboard-container .modal-title {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 700;
+    color: var(--color-slate-dark);
+    margin: 0;
+}
+
+.dashboard-container .modal-message {
+    color: #475569; /* text-slate-600 */
+    margin-top: 0.5rem; /* mt-2 */
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.dashboard-container .modal-close-button {
+    margin-top: 1.5rem; /* mt-6 */
+    width: 100%;
+    background-color: var(--color-slate-dark);
+    color: #ffffff;
+    padding: 0.65rem 0; /* py-2.5 */
+    border-radius: 0.5rem; /* rounded-lg */
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dashboard-container .modal-close-button:hover {
+    background-color: #334155;
+}
+
+/* === 4. Adaptación para Móviles (TU DISEÑO IDEAL) === */
+@media (max-width: 640px) {
+    .dashboard-container .appointment-card-vision {
+        flex-direction: column;
+    }
+    .dashboard-container .appointment-card__date-block,
+    .dashboard-container .appointment-card__info-block {
+        width: 100%;
+        max-width: none;
+    }
+    .dashboard-container .appointment-card__date-block {
+        flex-direction: row; /* La fecha se vuelve una barra horizontal */
+        justify-content: space-around;
+        padding: 0.75rem 1rem;
+    }
+    .dashboard-container .date-block__separator { 
+        display: none; /* Ocultamos el separador en la vista de barra */
+    }
+    .dashboard-container .date-block__day { 
+        font-size: 1.5rem; 
+    }
+    .dashboard-container .date-block__time { 
+        font-size: 1rem; 
+    }
+}

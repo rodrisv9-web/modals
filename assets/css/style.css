@@ -1,0 +1,192 @@
+/* veterinalia-appointment/assets/css/style.css */
+/* Aquí se añadirán los estilos CSS para el plugin Veterinalia Appointment */
+.va-professional-schedule-form {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.va-professional-schedule-form h3,
+.va-professional-dashboard h3 {
+    color: #333;
+    margin-top: 0;
+}
+
+button[type="submit"] {
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #005177;
+}
+
+/* Estilos para el carrusel de fechas */
+.va-date-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.va-dates-container {
+    display: flex;
+    overflow-x: auto; /* Permite el desplazamiento horizontal */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    flex-grow: 1;
+    margin: 0 10px;
+}
+
+.va-date-item {
+    flex: 0 0 auto; /* No crecer, no encoger, tamaño automático */
+    padding: 10px 15px;
+    margin: 0 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 80px; /* Ancho mínimo para cada día */
+}
+
+.va-date-item:hover {
+    background-color: #f0f0f0;
+}
+
+.va-date-item.selected {
+    background-color: #0073aa;
+    color: white;
+    font-weight: bold;
+}
+
+.va-nav-button {
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+.va-nav-button:hover {
+    background-color: #005177;
+}
+
+/* Estilos para los slots disponibles */
+.va-slots-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.va-slot-item {
+    background-color: #e6f7ff; /* Azul claro */
+    border: 1px solid #91d5ff; /* Borde azul */
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.9em;
+}
+
+.va-slot-item:hover {
+    background-color: #bae7ff; /* Azul un poco más oscuro al pasar el ratón */
+}
+
+
+
+/* Estilos para el panel de citas del profesional */
+.va-professional-dashboard {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.va-appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.va-appointments-table th,
+.va-appointments-table td {
+    border: 1px solid #e0e0e0;
+    padding: 8px;
+    text-align: left;
+}
+
+.va-appointments-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.va-appointments-table tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+.va-appointments-table tbody tr:hover {
+    background-color: #e9e9e9;
+}
+
+/* Estilos para los botones de acción de citas */
+.va-appointments-table .va-confirm-appointment-btn {
+    background-color: #28a745;
+}
+.va-appointments-table .va-confirm-appointment-btn:hover {
+    background-color: #218838;
+}
+.va-appointments-table .va-cancel-appointment-btn {
+    background-color: #dc3545;
+    margin-left: 5px;
+}
+.va-appointments-table .va-cancel-appointment-btn:hover {
+    background-color: #c82333;
+}
+.va-appointments-table .va-complete-appointment-btn {
+    background-color: #007bff;
+}
+.va-appointments-table .va-complete-appointment-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos de estado de cita */
+.va-appointment-status-pending {
+    color: #ffc107;
+    font-weight: bold;
+}
+.va-appointment-status-confirmed {
+    color: #28a745;
+    font-weight: bold;
+}
+.va-appointment-status-cancelled {
+    color: #dc3545;
+    font-weight: bold;
+}
+.va-appointment-status-completed {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Nuevos estilos para validación de errores */
+.va-input-error {
+    border: 1px solid red !important;
+}
+
+.va-block-error {
+    border: 1px solid red !important;
+    background-color: #fff0f0 !important; /* Fondo más claro para el bloque con error */
+} 
+
+ 

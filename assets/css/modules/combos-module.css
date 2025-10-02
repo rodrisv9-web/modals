@@ -1,0 +1,1523 @@
+/* ======================================================= */
+/* === MÓDULO DE COMBOS DE SERVICIOS - ESTILOS ESPECÍFICOS === */
+/* ======================================================= */
+
+/* Contenedor principal del módulo */
+.combos-module-container {
+    max-width: 100%;
+    margin: 0;
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ======================================================= */
+/* === ESTILOS DEL MODULE-HEADER                          === */
+/* ======================================================= */
+
+.combos-module-container .module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    flex-shrink: 0;
+}
+
+.combos-module-container .header-left-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.combos-module-container .header-center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.combos-module-container .back-to-prof-main,
+.combos-module-container .add-new-item-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.combos-module-container .back-to-prof-main:hover,
+.combos-module-container .add-new-item-btn:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.combos-module-container .add-new-item-btn {
+    padding: 0.5rem;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+}
+
+.combos-module-container .dashboard-section-title {
+    margin: 0;
+    padding: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-slate-dark);
+    line-height: 1.4;
+}
+
+/* Estadísticas del header */
+.combos-module-container .combos-stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.combos-module-container .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-slate);
+    background-color: #f8fafc;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+}
+
+.combos-module-container .stat-item i {
+    color: var(--color-primary);
+}
+
+/* ======================================================= */
+/* === ESTRUCTURA MÓVIL                                   === */
+/* ======================================================= */
+
+.combos-module-container .mobile-top-controls,
+.combos-module-container .mobile-stats-row {
+    display: none;
+}
+
+/* Vista móvil y desktop */
+.combos-module-container .desktop-only-view {
+    display: block;
+}
+
+.combos-module-container .mobile-only-view {
+    display: none;
+}
+
+/* ======================================================= */
+/* === ESTILOS DE NAVEGACIÓN MÓVIL                        === */
+/* ======================================================= */
+
+.combos-module-container .mobile-views-wrapper {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.combos-module-container .mobile-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f8fafc;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.combos-module-container .mobile-view.is-active {
+    transform: translateX(0);
+}
+
+.combos-module-container .mobile-view.is-exiting {
+    transform: translateX(-100%);
+}
+
+/* ======================================================= */
+/* === LISTA MÓVIL DE COMBOS                              === */
+/* ======================================================= */
+
+.combos-module-container .mobile-list-container {
+    padding: 1rem;
+}
+
+.combos-module-container .mobile-list-item {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+}
+
+.combos-module-container .mobile-list-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--color-primary);
+}
+
+.combos-module-container .mobile-list-item:last-child {
+    margin-bottom: 0;
+}
+
+.combos-module-container .item-content {
+    flex: 1;
+    padding-right: 1rem;
+}
+
+.combos-module-container .item-header {
+    margin-bottom: 0.5rem;
+}
+
+.combos-module-container .item-name {
+    font-weight: 600;
+    color: var(--color-slate-dark);
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.combos-module-container .item-description {
+    color: #64748b;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+}
+
+.combos-module-container .item-meta {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: #64748b;
+    flex-wrap: wrap;
+}
+
+.combos-module-container .item-duration,
+.combos-module-container .item-savings,
+.combos-module-container .item-price {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 500;
+}
+
+.combos-module-container .item-duration i {
+    color: var(--color-primary);
+    font-size: 0.7rem;
+}
+
+.combos-module-container .item-savings {
+    background: var(--color-green);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+
+.combos-module-container .item-savings i {
+    color: white;
+    font-size: 0.65rem;
+}
+
+.combos-module-container .item-price {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 700;
+}
+
+.combos-module-container .item-price i {
+    color: var(--color-primary);
+    font-size: 0.65rem;
+}
+
+.combos-module-container .item-actions-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.combos-module-container .item-actions-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: var(--color-primary-light);
+}
+
+.combos-module-container .empty-list-message {
+    text-align: center;
+    color: #9ca3af;
+    font-style: italic;
+    padding: 3rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* ======================================================= */
+/* === VISTA DE DETALLES MÓVIL                            === */
+/* ======================================================= */
+
+.combos-module-container .mobile-detail-container {
+    padding: 1rem;
+}
+
+.combos-module-container .loading-message {
+    text-align: center;
+    color: #9ca3af;
+    font-style: italic;
+    padding: 3rem 1rem;
+}
+
+.combos-module-container .combo-detail-card {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.combos-module-container .combo-detail-header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.combos-module-container .combo-detail-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-slate-dark);
+    margin: 0;
+    text-align: center;
+}
+
+.combos-module-container .combo-detail-description {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.combos-module-container .combo-detail-description p {
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0;
+}
+
+
+
+.combos-module-container .combo-detail-services {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.combos-module-container .combo-detail-services h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-slate-dark);
+    margin: 0 0 1rem 0;
+}
+
+.combos-module-container .services-included {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.combos-module-container .service-included-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+.combos-module-container .service-included-item i {
+    color: var(--color-green);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* ======================================================= */
+/* === FOOTER DE DETALLES MÓVIL                           === */
+/* ======================================================= */
+
+.combos-module-container .combo-detail-footer {
+    background: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+}
+
+.combos-module-container .combo-detail-meta {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.combos-module-container .duration-info,
+.combos-module-container .savings-info {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.combos-module-container .duration-info i {
+    color: var(--color-primary);
+    font-size: 0.75rem;
+}
+
+.combos-module-container .savings-info {
+    background: var(--color-green);
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+
+.combos-module-container .savings-info i {
+    color: white;
+    font-size: 0.7rem;
+}
+
+.combos-module-container .combo-price-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.combos-module-container .combo-price-info .original-price {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+}
+
+.combos-module-container .combo-price-info .current-price {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.combos-module-container .combo-detail-actions {
+    padding: 1rem 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.combos-module-container .combo-detail-actions .btn-primary,
+.combos-module-container .combo-detail-actions .btn-secondary {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    border: none;
+}
+
+/* ======================================================= */
+/* === ESTILOS DEL CUERPO PRINCIPAL                       === */
+/* ======================================================= */
+
+.combos-module-container .combos-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    background-color: #f8fafc;
+    min-height: calc(100vh - 100px);
+}
+
+.combos-module-container .combos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ======================================================= */
+/* === TARJETAS DE COMBOS                                 === */
+/* ======================================================= */
+
+.combos-module-container .combo-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.combos-module-container .combo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: var(--color-primary);
+}
+
+.combos-module-container .combo-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.combos-module-container .combo-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-slate-dark);
+    margin: 0;
+    line-height: 1.3;
+    flex-grow: 1;
+    margin-right: 1rem;
+}
+
+.combos-module-container .combo-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.combos-module-container .combo-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+}
+
+.combos-module-container .combo-action-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: var(--color-primary-light);
+}
+
+.combos-module-container .delete-combo-btn:hover {
+    border-color: var(--color-red);
+    color: var(--color-red);
+    background-color: #fef2f2;
+}
+
+.combos-module-container .combo-card-body {
+    padding: 1rem 1.5rem;
+}
+
+.combos-module-container .combo-description {
+    color: #64748b;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem 0;
+}
+
+/* Lista de servicios */
+.combos-module-container .combo-services h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-slate-dark);
+    margin: 0 0 0.75rem 0;
+}
+
+.combos-module-container .services-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+.combos-module-container .service-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.combos-module-container .service-item i {
+    color: var(--color-green);
+    font-size: 0.75rem;
+    width: 12px;
+    flex-shrink: 0;
+}
+
+/* Precios */
+.combos-module-container .combo-pricing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #f8fafc;
+    border-radius: 8px;
+}
+
+.combos-module-container .price-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.combos-module-container .original-price {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+}
+
+.combos-module-container .combo-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.combos-module-container .savings-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background-color: var(--color-green);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+}
+
+.combos-module-container .savings-badge i {
+    font-size: 0.625rem;
+}
+
+/* Metadatos */
+.combos-module-container .combo-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.combos-module-container .duration-info {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.combos-module-container .duration-info i {
+    color: var(--color-primary);
+    font-size: 0.75rem;
+}
+
+.combos-module-container .status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.combos-module-container .status-badge.status-active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.combos-module-container .status-badge.status-inactive {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+/* Footer de la tarjeta */
+.combos-module-container .combo-card-footer {
+    padding: 1rem 1.5rem 1.5rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.combos-module-container .use-combo-btn {
+    width: 100%;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.combos-module-container .use-combo-btn:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+
+
+/* ======================================================= */
+/* === ESTILOS DE MODALES                                 === */
+/* ======================================================= */
+
+.combos-module-container .modal-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem !important;
+    z-index: 50 !important;
+    overflow-y: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.combos-module-container .modal-overlay.hidden {
+    display: none !important;
+}
+
+.combos-module-container .modal-overlay:not(.hidden) {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.combos-module-container .modal-content {
+    background-color: white !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    transform: scale(0.95) !important;
+    opacity: 0 !important;
+    transition: all 0.3s ease !important;
+    max-height: 95vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    visibility: visible !important;
+}
+
+.combos-module-container .modal-overlay:not(.hidden) .modal-content {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    visibility: visible !important;
+}
+
+.combos-module-container .modal-content.show {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    visibility: visible !important;
+}
+
+/* Asegurar visibilidad del modal cuando está activo */
+.combos-module-container .modal-overlay:not(.hidden) {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Fallback para casos donde JavaScript no funcione */
+.combos-module-container .modal-overlay:not(.hidden) .modal-content {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    visibility: visible !important;
+}
+
+/* Regla específica para forzar visibilidad */
+.combos-module-container .modal-overlay:not(.hidden),
+.combos-module-container .modal-overlay:not(.hidden) .modal-content {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+}
+
+.combos-module-container .modal-large {
+    max-width: 900px;
+}
+
+.combos-module-container .modal-small {
+    max-width: 400px;
+}
+
+.combos-module-container .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.combos-module-container .modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: #1f2937;
+}
+
+.combos-module-container .modal-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: none;
+    background: #f3f4f6;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.combos-module-container .modal-close-btn:hover {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+/* ======================================================= */
+/* === ESTILOS DEL FORMULARIO                             === */
+/* ======================================================= */
+
+.combos-module-container .combo-form {
+    padding: 0 2rem 2rem;
+}
+
+.combos-module-container .form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.combos-module-container .form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.combos-module-container .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-slate-dark);
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-primary-light);
+    display: inline-block;
+}
+
+.combos-module-container .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.combos-module-container .form-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.combos-module-container .form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.combos-module-container .form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+.combos-module-container .form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.combos-module-container .form-grid.cols-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* ======================================================= */
+/* === SELECTOR DE SERVICIOS                              === */
+/* ======================================================= */
+
+.combos-module-container .services-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.combos-module-container .available-services,
+.combos-module-container .selected-services {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #f8fafc;
+}
+
+.combos-module-container .available-services h5,
+.combos-module-container .selected-services h5 {
+    margin: 0 0 1rem 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-slate-dark);
+}
+
+.combos-module-container .services-search {
+    margin-bottom: 1rem;
+}
+
+.combos-module-container .services-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.combos-module-container .service-option,
+.combos-module-container .selected-service-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.combos-module-container .service-option:hover {
+    border-color: var(--color-primary);
+    transform: translateX(2px);
+}
+
+.combos-module-container .service-name {
+    font-weight: 500;
+    color: #374151;
+    flex-grow: 1;
+}
+
+.combos-module-container .service-price {
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.combos-module-container .btn-small {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.75rem;
+}
+
+.combos-module-container .btn-small:hover {
+    background-color: var(--color-primary-dark);
+    transform: scale(1.1);
+}
+
+.combos-module-container .btn-small.remove-btn {
+    background-color: var(--color-red);
+}
+
+.combos-module-container .btn-small.remove-btn:hover {
+    background-color: #dc2626;
+}
+
+.combos-module-container .empty-selection {
+    text-align: center;
+    padding: 2rem;
+    color: #9ca3af;
+}
+
+.combos-module-container .empty-selection i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.combos-module-container .combo-totals {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+
+.combos-module-container .totals-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.combos-module-container .totals-row:last-child {
+    margin-bottom: 0;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+/* ======================================================= */
+/* === SECCIÓN DE PRECIOS                                 === */
+/* ======================================================= */
+
+.combos-module-container .pricing-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.combos-module-container .price-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.combos-module-container .currency-symbol {
+    position: absolute;
+    left: 0.75rem;
+    color: #6b7280;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.combos-module-container .price-input {
+    padding-left: 2rem;
+}
+
+.combos-module-container .savings-display {
+    padding: 1rem;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+}
+
+.combos-module-container .savings-amount {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.combos-module-container .savings-amount .label {
+    color: #166534;
+    font-weight: 500;
+}
+
+.combos-module-container .savings-amount .amount {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #166534;
+}
+
+.combos-module-container .discount-percentage {
+    text-align: center;
+    color: #166534;
+    font-size: 0.875rem;
+}
+
+.combos-module-container .discount-percentage span {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* ======================================================= */
+/* === BOTONES DE FORMULARIO                              === */
+/* ======================================================= */
+
+.combos-module-container .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.combos-module-container .btn-primary,
+.combos-module-container .btn-secondary,
+.combos-module-container .btn-danger {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    border: none;
+}
+
+.combos-module-container .btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.combos-module-container .btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+.combos-module-container .btn-secondary {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.combos-module-container .btn-secondary:hover {
+    background-color: #e5e7eb;
+}
+
+.combos-module-container .btn-danger {
+    background-color: var(--color-red);
+    color: white;
+}
+
+.combos-module-container .btn-danger:hover {
+    background-color: #dc2626;
+    transform: translateY(-1px);
+}
+
+/* ======================================================= */
+/* === MODAL DE CONFIRMACIÓN                              === */
+/* ======================================================= */
+
+.combos-module-container .modal-body {
+    padding: 1rem 2rem;
+}
+
+.combos-module-container .modal-body p {
+    margin: 0 0 1rem 0;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.combos-module-container .warning-text {
+    color: var(--color-red);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* ======================================================= */
+/* === ESTILOS RESPONSIVOS                                === */
+/* ======================================================= */
+
+@media (max-width: 768px) {
+    .combos-module-container .combos-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .combos-module-container .combos-body {
+        padding: 1rem;
+    }
+    
+    .combos-module-container .services-selector {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .combos-module-container .pricing-section {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .combos-module-container .form-grid.cols-2 {
+        grid-template-columns: 1fr;
+    }
+    
+    .combos-module-container .combo-pricing {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .combos-module-container .combo-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .combos-module-container .combo-action-btn {
+        width: 100%;
+        height: 36px;
+        justify-content: center;
+    }
+    
+    /* Mejoras específicas para el modal en tablets */
+    .combos-module-container .modal-content {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+    
+    .combos-module-container .services-list {
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Activar vista móvil */
+    .combos-module-container .desktop-only-view {
+        display: none !important;
+    }
+    
+    .combos-module-container .mobile-only-view {
+        display: block;
+        height: calc(100vh - 100px); /* Ajustar según el header */
+    }
+}
+
+@media (max-width: 480px) {
+    .combos-module-container .module-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+        padding: 1rem;
+    }
+    
+    /* Ocultar estructura desktop en móviles */
+    .combos-module-container .header-left-section:not(.mobile-top-controls .header-left-section),
+    .combos-module-container .header-center-content,
+    .combos-module-container .add-new-item-btn:not(.mobile-top-controls .add-new-item-btn) {
+        display: none !important;
+    }
+    
+    /* Mostrar estructura móvil */
+    .combos-module-container .mobile-top-controls,
+    .combos-module-container .mobile-stats-row {
+        display: flex;
+    }
+    
+    .combos-module-container .mobile-top-controls {
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 0.75rem;
+    }
+    
+    .combos-module-container .mobile-center-content {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .combos-module-container .mobile-stats-row {
+        justify-content: center;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .combos-module-container .dashboard-section-title {
+        font-size: 1rem;
+    }
+    
+    .combos-module-container .combo-card-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .combos-module-container .combo-name {
+        margin-right: 0;
+    }
+    
+    .combos-module-container .form-actions {
+        flex-direction: column;
+    }
+    
+    .combos-module-container .modal-content {
+        margin: 0.5rem;
+        max-height: calc(100vh - 1rem);
+        border-radius: 8px;
+    }
+    
+    .combos-module-container .modal-header {
+        padding: 1rem;
+    }
+    
+    .combos-module-container .combo-form {
+        padding: 0 1rem 1rem;
+    }
+    
+    /* Optimizaciones específicas del formulario en móviles */
+    .combos-module-container .form-section {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+    }
+    
+    .combos-module-container .section-title {
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .combos-module-container .form-label {
+        font-size: 0.8rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .combos-module-container .form-input {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+    
+    .combos-module-container .services-selector {
+        gap: 0.75rem;
+    }
+    
+    .combos-module-container .available-services,
+    .combos-module-container .selected-services {
+        padding: 0.75rem;
+    }
+    
+    .combos-module-container .service-option,
+    .combos-module-container .selected-service-item {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+    
+    .combos-module-container .services-list {
+        max-height: 180px;
+    }
+    
+    .combos-module-container .btn-primary,
+    .combos-module-container .btn-secondary {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Ajustes para el footer de detalles móvil */
+    .combos-module-container .combo-detail-meta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .combos-module-container .combo-price-info {
+        justify-content: center;
+        padding: 0.5rem;
+        background: white;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .combos-module-container .duration-info,
+    .combos-module-container .savings-info {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 380px) {
+    .combos-module-container .back-to-prof-main {
+        width: 36px;
+        height: 36px;
+        padding: 0.375rem;
+    }
+    
+    .combos-module-container .add-new-item-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0.375rem;
+    }
+    
+    .combos-module-container .dashboard-section-title {
+        font-size: 0.9rem;
+    }
+    
+    .combos-module-container .stat-item {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* ======================================================= */
+/* === ACTION SHEET MÓVIL                                 === */
+/* ======================================================= */
+
+.mobile-action-sheet-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 9999;
+    padding: 0;
+}
+
+.mobile-action-sheet {
+    background: white;
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    max-width: 500px;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.action-sheet-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: center;
+}
+
+.action-sheet-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-slate-dark);
+}
+
+.action-sheet-buttons {
+    padding: 1rem;
+}
+
+.action-sheet-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: none;
+    background: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
+    border: 1px solid #e5e7eb;
+}
+
+.action-sheet-btn:hover {
+    background: #f8fafc;
+    border-color: var(--color-primary);
+}
+
+.action-sheet-btn.cancel {
+    background: #f3f4f6;
+    color: #6b7280;
+    font-weight: 600;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.action-sheet-btn.cancel:hover {
+    background: #e5e7eb;
+}
+
+.action-sheet-btn i {
+    color: var(--color-primary);
+    width: 20px;
+}
+
+/* ======================================================= */
+/* === REGLAS GLOBALES PARA FORZAR VISIBILIDAD           === */
+/* ======================================================= */
+
+/* Forzar visibilidad del modal en todos los casos */
+#combo-modal:not(.hidden) {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+    z-index: 9999 !important;
+}
+
+#combo-modal:not(.hidden) .modal-content {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+    transform: scale(1) !important;
+}
+
+/* Override de cualquier regla CSS conflictiva */
+.combos-module-container #combo-modal:not(.hidden),
+.combos-module-container #combo-modal:not(.hidden) .modal-content {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+}
+
+/* Regla específica para el modal de combos */
+.combos-module-container .modal-overlay:not(.hidden) {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+}
+
+.combos-module-container .modal-overlay:not(.hidden) .modal-content {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}

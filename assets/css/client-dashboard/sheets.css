@@ -1,0 +1,24 @@
+/* Client Dashboard v2 — Bottom Sheets (scoped) */
+#va-client-dashboard .bottom-sheet-overlay { position:fixed; inset:0; background-color: rgba(0,0,0,0.4); z-index:40; opacity:0; visibility:hidden; transition: opacity 0.4s ease, visibility 0.4s ease; }
+#va-client-dashboard .bottom-sheet-overlay.active { opacity:1; visibility:visible; }
+
+#va-client-dashboard .bottom-sheet { position:fixed; bottom:0; left:0; width:100%; background-color: var(--gray-50); border-top-left-radius: var(--border-radius-4xl); border-top-right-radius: var(--border-radius-4xl); box-shadow: 0 -10px 25px -5px rgb(0 0 0 / 0.1); z-index:50; padding:1.5rem; display:flex; flex-direction:column; max-height:85vh; transform:translateY(100%); transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+#va-client-dashboard .bottom-sheet.active { transform:translateY(0); }
+#va-client-dashboard .sheet-handle { display:flex; justify-content:center; margin-bottom:1rem; }
+#va-client-dashboard .sheet-handle-bar { width:2.5rem; height:0.25rem; border-radius:9999px; background-color: var(--gray-300); }
+#va-client-dashboard .sheet-title { text-align:center; font-size:1.5rem; font-weight:700; margin-bottom:1.5rem; }
+#va-client-dashboard .sheet-content { overflow-y:auto; padding-bottom:1rem; }
+#va-client-dashboard .no-scrollbar::-webkit-scrollbar { display:none; }
+#va-client-dashboard .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Listas/Forms en sheets */
+#va-client-dashboard #pet-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.75rem; }
+#va-client-dashboard .pet-list-item { display:flex; align-items:center; gap:1rem; padding:0.75rem; background-color: var(--white); border-radius: var(--border-radius-2xl); box-shadow: var(--shadow-sm); cursor:pointer; }
+#va-client-dashboard .pet-list-item.selected { outline: 2px solid var(--primary-color); background-color: #faf5ff; }
+#va-client-dashboard .pet-list-item .pet-name { font-weight:700; font-size:1.125rem; color: var(--gray-800); }
+
+#va-client-dashboard #add-pet-sheet .tab-buttons { display:flex; border-bottom:1px solid var(--gray-200); margin-bottom:1.5rem; }
+#va-client-dashboard #add-pet-sheet .tab-button { flex:1; padding:0.75rem; font-weight:700; color: var(--gray-500); border:none; background:none; cursor:pointer; transition: color 0.3s, border-color 0.3s; border-bottom:2px solid transparent; }
+#va-client-dashboard #add-pet-sheet .tab-button.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+#va-client-dashboard .tab-content { display:none; }
+#va-client-dashboard .tab-content.active { display:block; }

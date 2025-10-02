@@ -1,0 +1,1089 @@
+/*
+ * ===================================================================
+ * === ESTILOS REFACTORIZADOS PARA EL MÓDULO DE HORARIOS (SCHEDULE) ===
+ * ===================================================================
+ * Este código moderniza y hace responsivo el formulario de horarios,
+ * integrándose con las variables y componentes de `dashboard-base.css`.
+ */
+
+/* =====================================================================
+ * WIZARD INLINE MODALS - ESTILOS PARA MODALES DENTRO DEL WIZARD
+ * ===================================================================== */
+
+.wizard-inline-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.wizard-inline-modal:not([style*="display: none"]) {
+    opacity: 1;
+}
+
+.wizard-modal-content {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90%;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.wizard-inline-modal:not([style*="display: none"]) .wizard-modal-content {
+    transform: scale(1);
+}
+
+.wizard-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 0.5rem;
+}
+
+.wizard-modal-header h4 {
+    margin: 0;
+    color: var(--color-text-dark, #333);
+    font-size: 1.1rem;
+}
+
+.wizard-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.wizard-modal-close:hover {
+    background-color: #f5f5f5;
+}
+
+/* Estilos para los formularios dentro de los modales */
+.wizard-inline-modal .form-group {
+    margin-bottom: 1rem;
+}
+
+.wizard-inline-modal .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--color-text-dark, #333);
+}
+
+.wizard-inline-modal .form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease;
+}
+
+.wizard-inline-modal .form-input:focus {
+    outline: none;
+    border-color: var(--color-primary, #007cba);
+    box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.1);
+}
+
+.wizard-inline-modal .form-help {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.wizard-inline-modal .input-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.wizard-inline-modal .input-group .form-input {
+    flex: 1;
+}
+
+.wizard-inline-modal .form-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e5e5;
+}
+
+.wizard-inline-modal .btn-secondary,
+.wizard-inline-modal .btn-primary {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.wizard-inline-modal .btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+}
+
+.wizard-inline-modal .btn-secondary:hover {
+    background: #e9ecef;
+}
+
+.wizard-inline-modal .btn-primary {
+    background: var(--color-primary, #007cba);
+    color: white;
+}
+
+.wizard-inline-modal .btn-primary:hover {
+    background: var(--color-primary-hover, #005a87);
+}
+
+.wizard-inline-modal .btn-primary:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Estilos para las notificaciones del wizard */
+.wizard-notification {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 4px;
+    padding: 10px 15px;
+    z-index: 1002;
+    font-size: 0.9em;
+    max-width: 350px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideInRight 0.3s ease;
+}
+
+.wizard-notification.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.wizard-notification.warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.wizard-notification.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .wizard-modal-content {
+        width: 95%;
+        padding: 1rem;
+        margin: 1rem;
+    }
+    
+    .wizard-notification {
+        position: fixed;
+        top: 20px;
+        left: 10px;
+        right: 10px;
+        max-width: none;
+    }
+    
+    .wizard-inline-modal .form-actions {
+        flex-direction: column;
+    }
+    
+    .wizard-inline-modal .btn-secondary,
+    .wizard-inline-modal .btn-primary {
+        width: 100%;
+    }
+}
+
+/* 1. Contenedor Principal del Formulario
+ * Se ajusta el padding y se utilizan las variables de diseño globales.
+ */
+.va-professional-schedule-form {
+    background-color: var(--color-white, #FFFFFF);
+    border-radius: 12px; /* Coincide con .card */
+    box-shadow: var(--shadow-card, 0 4px 12px rgba(0, 0, 0, 0.05));
+    padding: 1.5rem; /* Unificado con otros módulos */
+    margin: 1.5rem auto;
+    max-width: 900px;
+}
+
+/* 2. Títulos y Párrafos
+ * Se centran y se ajustan los márgenes para mayor claridad.
+ */
+.va-professional-schedule-form h3,
+.va-professional-schedule-form h4 {
+    text-align: center;
+    color: var(--color-text-dark, #333);
+    margin-bottom: 0.5rem;
+}
+
+.va-professional-schedule-form h3 {
+    font-size: 1.8rem;
+}
+
+.va-professional-schedule-form h4 {
+    font-size: 1.2rem;
+    color: var(--color-text-gray, #4A5568);
+}
+
+.va-professional-schedule-form p {
+    text-align: center;
+    color: var(--color-text-gray, #4A5568);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+/* 3. Sección de Plantillas
+ * Se mejora el diseño de los botones para ser más atractivos.
+ */
+.va-schedule-templates-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border, #E2E8F0);
+}
+
+.va-templates-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.va-template-btn {
+    background-color: var(--color-primary-light, #EBF8FF);
+    color: var(--color-primary, #3182CE);
+    border: 1px solid var(--color-primary-light, #EBF8FF);
+    padding: 0.6rem 1.2rem;
+    border-radius: 9999px; /* Botones tipo "píldora" */
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.va-template-btn:hover {
+    background-color: var(--color-primary, #3182CE);
+    color: var(--color-white, #FFFFFF);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover, 0 8px 20px rgba(0, 0, 0, 0.08));
+}
+
+/* 4. Bloques de Horario Individuales
+ * Se moderniza el layout con `grid` y se mejoran los inputs.
+ */
+#va-schedule-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Mayor espaciado entre bloques */
+    margin-top: 1.5rem;
+}
+
+.va-schedule-block {
+    display: grid;
+    /* Un layout de grid más flexible y adaptable */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    align-items: flex-end; /* Alinea los elementos en la base */
+    padding: 1.5rem;
+    border: 1px solid var(--color-border, #E2E8F0);
+    border-radius: 12px;
+    background-color: var(--color-background, #F8F9FA);
+}
+
+.va-schedule-block label {
+    font-weight: 600;
+    color: var(--color-text-dark, #333);
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 0.875rem;
+}
+
+/* Estilo unificado para todos los campos del formulario */
+.va-schedule-block select,
+.va-schedule-block input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border, #E2E8F0);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--color-text-dark, #333);
+    background-color: var(--color-white, #FFFFFF);
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+}
+
+.va-schedule-block select:focus,
+.va-schedule-block input:focus {
+    outline: none;
+    border-color: var(--color-primary, #3182CE);
+    box-shadow: 0 0 0 3px var(--color-primary-light, #EBF8FF);
+}
+
+/* 5. Botones de Acción
+ * Se adaptan al nuevo sistema de diseño y se organizan con flexbox.
+ */
+.va-form-actions {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los botones se apilen en pantallas pequeñas */
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+#va-add-schedule-block,
+#va-save-schedule-btn,
+.va-remove-schedule-block {
+    /* Aplicamos el estilo de los botones del dashboard */
+    background-color: var(--color-indigo, #4F46E5);
+    color: var(--color-white, #FFFFFF);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    box-shadow: var(--shadow-card, 0 4px 12px rgba(0, 0, 0, 0.05));
+}
+
+#va-add-schedule-block:hover,
+#va-save-schedule-btn:hover,
+.va-remove-schedule-block:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover, 0 8px 20px rgba(0, 0, 0, 0.08));
+}
+
+/* Botón de añadir con un color secundario */
+#va-add-schedule-block {
+    background-color: var(--color-white, #FFFFFF);
+    color: var(--color-primary, #3182CE);
+    border: 1px solid var(--color-border, #E2E8F0);
+}
+#va-add-schedule-block:hover {
+    background-color: var(--color-primary-light, #EBF8FF);
+}
+
+/* Botón de eliminar con un color de "peligro" */
+.va-remove-schedule-block {
+    background-color: transparent;
+    color: var(--color-red, #EF4444);
+    border: 1px solid var(--color-red, #EF4444);
+    padding: 0.75rem; /* Hacemos que sea un poco más pequeño */
+    width: 100%;
+}
+.va-remove-schedule-block:hover {
+    background-color: var(--color-red, #EF4444);
+    color: var(--color-white, #FFFFFF);
+}
+
+#va-schedule-feedback {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    width: 100%;
+}
+
+/* 6. Diseño Responsivo (Mobile-First)
+ * Se ajusta el layout para pantallas pequeñas.
+ */
+@media (max-width: 768px) {
+    .va-professional-schedule-form {
+        padding: 1rem;
+    }
+
+    .va-schedule-block {
+        /* Los campos se apilan uno encima del otro */
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    /* Los botones de acción ocupan todo el ancho y se separan */
+    .va-form-actions {
+        flex-direction: column;
+    }
+
+    #va-add-schedule-block,
+    #va-save-schedule-btn {
+        width: 100%;
+    }
+}
+
+/* 7. Estilos para Modales (Action Sheet y Full-screen) */
+.va-modal {
+    --transition-duration: 0.3s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Por defecto, alineado abajo para bottom-sheet */
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-duration) ease-in-out, visibility var(--transition-duration) ease-in-out;
+}
+
+.va-modal.is-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.va-modal .va-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px); /* Efecto de desenfoque en el fondo */
+    opacity: 0;
+    transition: opacity var(--transition-duration) ease-in-out;
+}
+
+.va-modal.is-active .va-modal-backdrop {
+    opacity: 1;
+}
+
+.va-modal .va-modal-content {
+    background-color: var(--color-white, #FFFFFF);
+    position: relative;
+    z-index: 1001;
+    width: 100%;
+    max-width: 500px; /* Ancho máximo para el action sheet */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(100%); /* Oculto por defecto, deslizado hacia abajo */
+    transition: transform var(--transition-duration) ease-out;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* Espaciado entre botones */
+}
+
+.va-modal.is-active .va-modal-content {
+    transform: translateY(0); /* Deslizar hacia arriba */
+}
+
+/* Animación de cierre */
+.va-modal.is-closing .va-modal-content {
+    transform: translateY(100%);
+}
+.va-modal.is-closing .va-modal-backdrop {
+    opacity: 0;
+}
+
+/* Estilos específicos para el modal full-screen (ej. importación de plantillas) */
+.va-modal-full-screen {
+    align-items: center; /* Centrar verticalmente */
+}
+
+.va-modal-full-screen .va-modal-content {
+    border-radius: 12px; /* Esquinas redondeadas como una tarjeta */
+    max-width: 800px; /* Más ancho para el contenido de la lista */
+    width: 90%; /* Ocupa más espacio en pantallas grandes */
+    transform: scale(0.9); /* Animación de zoom */
+    opacity: 0;
+    transition: transform var(--transition-duration) ease-out, opacity var(--transition-duration) ease-out;
+}
+
+.va-modal-full-screen.is-active .va-modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.va-modal-full-screen.is-closing .va-modal-content {
+    transform: scale(0.9);
+    opacity: 0;
+}
+
+/* Header del modal de importación */
+.va-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border, #E2E8F0);
+}
+
+.va-modal .modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--color-text-dark, #333);
+}
+
+.va-modal .close-modal-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text-gray, #4A5568);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.va-modal .close-modal-btn:hover {
+    color: var(--color-red, #EF4444);
+}
+
+/* Botones de acción del action sheet */
+.va-modal-action-button {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.va-modal-action-button.primary-button {
+    background-color: var(--color-primary, #3182CE);
+    color: var(--color-white, #FFFFFF);
+    border: 1px solid var(--color-primary, #3182CE);
+}
+
+.va-modal-action-button.primary-button:hover {
+    background-color: var(--color-primary-dark, #2B6CB0);
+    transform: translateY(-2px);
+}
+
+.va-modal-action-button.secondary-button {
+    background-color: var(--color-white, #FFFFFF);
+    color: var(--color-primary, #3182CE);
+    border: 1px solid var(--color-primary-light, #EBF8FF);
+}
+
+.va-modal-action-button.secondary-button:hover {
+    background-color: var(--color-primary-light, #EBF8FF);
+    transform: translateY(-2px);
+}
+
+.va-modal-action-button.danger-button {
+    background-color: transparent;
+    color: var(--color-red, #EF4444);
+    border: none;
+}
+
+.va-modal-action-button.danger-button:hover {
+    color: var(--color-red-dark, #DC2626);
+    transform: translateY(-2px);
+}
+
+/* Lista de plantillas */
+.va-template-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1rem 0;
+    max-height: 60vh; /* Limita la altura y permite scroll */
+    overflow-y: auto;
+}
+
+.va-template-list-item {
+    background-color: var(--color-background, #F8F9FA);
+    border: 1px solid var(--color-border, #E2E8F0);
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.va-template-list-item:hover {
+    border-color: var(--color-primary, #3182CE);
+    box-shadow: var(--shadow-card-hover, 0 8px 20px rgba(0, 0, 0, 0.08));
+    transform: translateY(-2px);
+}
+
+.va-template-list-item h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--color-primary, #3182CE);
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.va-template-list-item p {
+    font-size: 0.9rem;
+    color: var(--color-text-gray, #4A5568);
+    text-align: left;
+    margin-bottom: 0;
+}
+
+/* Responsividad para modales */
+@media (max-width: 768px) {
+    .va-modal .va-modal-content {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        padding: 1rem;
+    }
+
+    .va-modal-full-screen .va-modal-content {
+        width: 95%;
+        height: 90%;
+        padding: 1rem;
+    }
+
+    .va-template-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================================================
+ * === NUEVA UI PARA MÓDULO DE HORARIOS - ESTILOS MODULARES ===
+ * =====================================================================
+ * Estilos para la nueva interfaz con navegación por estados
+ */
+
+/* Enhanced Module Header para Nueva UI */
+.va-schedule-new-ui .module-header {
+    position: relative;
+}
+
+.va-schedule-new-ui .back-to-prof-main {
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+.va-schedule-new-ui .back-to-prof-main span {
+    transition: all 0.2s ease;
+}
+
+/* Auto-save Indicators */
+.va-autosave-indicator {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    z-index: 10;
+    opacity: 0;
+    animation: fadeInSlide 0.3s ease forwards;
+}
+
+.va-autosave-indicator.pending {
+    background-color: var(--color-slate-dark, #475569);
+    color: white;
+}
+
+.va-autosave-indicator.pending span::before {
+    content: '⏳ ';
+}
+
+.va-autosave-indicator.saving {
+    background-color: var(--color-blue, #3B82F6);
+    color: white;
+}
+
+.va-autosave-indicator.saving span::before {
+    content: '⏳ ';
+}
+
+.va-autosave-indicator.saved {
+    background-color: var(--color-green, #10B981);
+    color: white;
+}
+
+.va-autosave-indicator.saved span::before {
+    content: '✓ ';
+}
+
+.va-autosave-indicator.error {
+    background-color: var(--color-red, #EF4444);
+    color: white;
+}
+
+.va-autosave-indicator.error span::before {
+    content: '✗ ';
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+/* Manual Save Button */
+.va-manual-save-btn {
+    background-color: var(--color-slate-dark, #475569);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.va-manual-save-btn:hover {
+    background-color: var(--color-slate-dark, #334155);
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+.va-manual-save-btn:active {
+    transform: translateY(0);
+}
+
+/* Auto-save Notice */
+.va-autosave-notice {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--color-text-gray, #6B7280);
+    text-align: center;
+    font-style: italic;
+}
+
+/* Responsive para indicadores de autoguardado */
+@media (max-width: 768px) {
+    .va-autosave-indicator {
+        right: 0.5rem;
+        font-size: 0.7rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .va-manual-save-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
+    }
+
+    .va-autosave-notice {
+        font-size: 0.7rem;
+    }
+}
+
+.va-schedule-new-ui .dashboard-section-title {
+    transition: all 0.3s ease;
+    text-align: center;
+    flex: 1;
+}
+
+.va-schedule-new-ui .add-new-item-btn {
+    transition: all 0.3s ease;
+}
+
+/* Navigation Container */
+.va-schedule-nav-container {
+    position: relative;
+    min-height: 400px;
+}
+
+/* Days List View */
+.va-days-view {
+    display: block;
+}
+
+.va-days-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.va-day-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background-color: var(--color-white, #FFFFFF);
+    border: 1px solid var(--color-border, #E2E8F0);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.va-day-item:hover {
+    border-color: var(--color-primary, #3182CE);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.va-day-item.has-schedule {
+    border-color: var(--color-green, #10B981);
+    background-color: var(--color-background, #F8F9FA);
+}
+
+.va-day-item.has-schedule .va-day-name {
+    color: var(--color-green, #10B981);
+    font-weight: 600;
+}
+
+.va-day-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.va-day-name {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-text-dark, #333);
+}
+
+.va-day-status {
+    font-size: 0.875rem;
+    color: var(--color-text-gray, #4A5568);
+}
+
+.va-day-slots-preview {
+    font-size: 0.75rem;
+    color: var(--color-text-gray, #4A5568);
+    font-style: italic;
+    display: none;
+    max-width: 60%;
+    text-align: right;
+}
+
+/* Slots View */
+.va-slots-view {
+    display: none;
+}
+
+/* Animations and Transitions */
+.va-schedule-view {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading states */
+.va-day-item.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.va-day-item.loading::after {
+    content: '';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-border, #E2E8F0);
+    border-top: 2px solid var(--color-primary, #3182CE);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Enhanced Schedule Blocks for New UI */
+.va-schedule-new-ui .va-schedule-block {
+    position: relative;
+    padding: 1.25rem;
+    background-color: var(--color-white, #FFFFFF);
+    border: 1px solid var(--color-border, #E2E8F0);
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.va-schedule-new-ui .va-schedule-block:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--color-primary, #3182CE);
+}
+
+.va-schedule-new-ui .va-schedule-block label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-dark, #333);
+    margin-bottom: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.va-schedule-new-ui .va-schedule-block label:first-child {
+    margin-top: 0;
+}
+
+.va-schedule-new-ui .va-schedule-block input,
+.va-schedule-new-ui .va-schedule-block select {
+    width: 100%;
+    padding: 0.875rem;
+    border: 1px solid var(--color-border, #E2E8F0);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.va-schedule-new-ui .va-schedule-block input:focus,
+.va-schedule-new-ui .va-schedule-block select:focus {
+    outline: none;
+    border-color: var(--color-primary, #3182CE);
+    box-shadow: 0 0 0 3px var(--color-primary-light, #EBF8FF);
+}
+
+/* Enhanced Remove Button */
+.va-schedule-new-ui .va-remove-schedule-block {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background-color: transparent;
+    color: var(--color-red, #EF4444);
+    border: 1px solid var(--color-red, #EF4444);
+    border-radius: 6px;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: auto;
+    min-width: 80px;
+}
+
+.va-schedule-new-ui .va-remove-schedule-block:hover {
+    background-color: var(--color-red, #EF4444);
+    color: var(--color-white, #FFFFFF);
+    transform: translateY(-1px);
+}
+
+/* Responsive Design for New UI */
+@media (max-width: 768px) {
+    .va-schedule-new-ui .module-header {
+        padding: 0.75rem 0;
+    }
+
+    .va-schedule-new-ui .dashboard-section-title {
+        font-size: 1.25rem;
+    }
+
+    .va-schedule-new-ui .back-to-prof-main,
+    .va-schedule-new-ui .add-new-item-btn {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .va-day-item {
+        padding: 0.875rem 1rem;
+    }
+
+    .va-day-name {
+        font-size: 1rem;
+    }
+
+    .va-day-status,
+    .va-day-slots-preview {
+        font-size: 0.75rem;
+    }
+
+    .va-schedule-new-ui .va-schedule-block {
+        padding: 1rem;
+    }
+
+    .va-schedule-new-ui .va-schedule-block label {
+        font-size: 0.8rem;
+    }
+
+    .va-schedule-new-ui .va-schedule-block input,
+    .va-schedule-new-ui .va-schedule-block select {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .va-module-header {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .va-module-back-btn {
+        align-self: flex-start;
+        margin-right: 0;
+    }
+
+    .va-module-add-btn {
+        align-self: flex-end;
+    }
+
+    .va-module-title {
+        text-align: center;
+        order: -1;
+    }
+
+    .va-day-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .va-day-slots-preview {
+        max-width: 100%;
+        text-align: left;
+    }
+}

@@ -1,0 +1,153 @@
+/* ====================================================================
+   MÓDULO "MI CATÁLOGO" - ESTILOS ESPECÍFICOS
+   ==================================================================== */
+
+/* Contenedor Principal */
+.catalog-module-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--color-gray-50);
+}
+
+/* Cuerpo del Catálogo con Scroll */
+.catalog-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+/* Filtros */
+.catalog-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+}
+
+#product-search {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+}
+
+#product-type-filter {
+    flex-shrink: 0;
+    min-width: 200px;
+    padding: 0.75rem;
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius);
+    background-color: var(--color-white);
+    font-size: 0.875rem;
+}
+
+/* Grid de Productos */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Tarjeta de Producto */
+.product-card {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    transition: all var(--transition-base);
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.product-card-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+.product-card-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-gray-800);
+}
+
+.product-card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+.product-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+}
+
+.product-detail strong {
+    color: var(--color-gray-600);
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.product-detail span {
+    color: var(--color-gray-800);
+}
+
+.product-card-footer {
+    padding: 1rem 1.5rem;
+    background-color: var(--color-gray-50);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.btn-edit-product, .btn-delete-product {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    border: 1px solid var(--color-gray-300);
+    background-color: var(--color-white);
+    transition: all var(--transition-base);
+}
+
+.btn-edit-product:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.btn-delete-product:hover {
+    border-color: var(--color-red);
+    background-color: #fee2e2;
+    color: var(--color-red);
+}
+
+/* Estilos para el Modal (heredados de unified-modals.css) */
+/* Se reusan las clases .modal-overlay, .modal-content, etc. */
+
+.product-form .form-section {
+    padding: 1.5rem;
+}
+
+.product-form .form-actions {
+    padding: 1.5rem;
+    background-color: var(--color-gray-50);
+    border-top: 1px solid var(--color-gray-200);
+}
+
+@media (max-width: 768px) {
+    .catalog-body {
+        padding: 1rem;
+    }
+    .catalog-filters {
+        flex-direction: column;
+    }
+}

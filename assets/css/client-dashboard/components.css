@@ -1,0 +1,42 @@
+/* Client Dashboard v2 — Extra Components (scoped) */
+#va-client-dashboard .metric-item .ph-calendar-check { color: var(--blue-500); }
+#va-client-dashboard .metric-item .ph-heartbeat { color: var(--red-500); }
+#va-client-dashboard .metric-item .ph-syringe { color: var(--green-500); }
+#va-client-dashboard .metric-item .ph-scaleweight { color: var(--yellow-500); }
+
+/* Accessibility helpers */
+#va-client-dashboard [aria-hidden="true"] { pointer-events: none; }
+
+/* --- INICIO: ESTILOS PARA EL SELECTOR DE PRODUCTOS VACÍO --- */
+.product-selector-empty-state {
+    padding: 1rem;
+    text-align: center;
+    background-color: #f8fafc; /* coolGray-50 */
+    border: 1px dashed #cbd5e1; /* coolGray-300 */
+    border-radius: 0.375rem; /* rounded-md */
+}
+
+.product-selector-empty-state .empty-state-message {
+    font-size: 0.875rem; /* text-sm */
+    color: #475569; /* coolGray-600 */
+    margin-bottom: 0.75rem;
+}
+
+.product-selector-empty-state .button-secondary {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1e293b; /* coolGray-800 */
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1; /* coolGray-300 */
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.product-selector-empty-state .button-secondary:hover {
+    background-color: #f1f5f9; /* coolGray-100 */
+}
+/* --- FIN: ESTILOS PARA EL SELECTOR DE PRODUCTOS VACÍO --- */
+

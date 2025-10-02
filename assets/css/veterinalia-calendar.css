@@ -1,0 +1,539 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    --brand-pink-light: #FFF0F5;   /* Rosa Lavanda */
+    --brand-pink-medium: #FFD1DC; /* Rosa Pastel */
+    --brand-pink-accent: #FF85A2; /* Rosa Acentuado */
+    --brand-pink-dark: #E86A8D;   /* Rosa Oscuro para Interacción */
+    --text-color-dark: #333;
+    --text-color-light: #FFF;
+    --border-color: #F0E4E8;
+    --card-shadow: 0 8px 25px rgba(232, 106, 141, 0.1);
+}
+
+/* --- ESTILOS EXISTENTES DEL CALENDARIO --- */
+
+#va-calendar-container {
+    max-width: -webkit-fill-available; /* Ancho máximo para centrar */
+    margin: 0 auto; /* Centrar el contenedor */
+    border-radius: 20px; /* Desde .va-booking-container */
+    box-shadow: var(--card-shadow); /* Desde .va-booking-container */
+    background-color: var(--text-color-light); /* Fondo blanco para la tarjeta */
+    padding: 30px; /* Espaciado interno */
+    box-sizing: border-box; /* Asegurar que el padding no añada ancho */
+}
+
+h4 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-color-dark);
+    font-weight: 600;
+}
+
+.calendar-slot {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    padding: 12px; /* Desde .va-slot-item */
+    border-radius: 8px; /* Desde .va-slot-item */
+    font-weight: 600; /* Desde .va-slot-item */
+    transition: all 0.3s ease; /* Desde .va-slot-item */
+    text-align: center; /* Desde .va-slot-item */
+    cursor: pointer; /* Asegurar que tenga cursor de puntero */
+}
+
+.calendar-day {
+    padding: 10px 5px; /* Desde .va-date-item */
+    margin: 0 5px; /* Desde .va-date-item */
+    border-radius: 12px; /* Desde .va-date-item */
+    transition: all 0.3s ease; /* Desde .va-date-item */
+    border: 2px solid transparent; /* Desde .va-date-item */
+    display: flex; /* Asegurar flexbox */
+    flex-direction: column; /* Apilar elementos verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    justify-content: center; /* Centrar verticalmente */
+}
+
+.calendar-day-date {
+    padding-bottom: 5px; /* Ajustar padding */
+    text-align: center; /* Centrar texto */
+    width: 100%; /* Ocupar todo el ancho */
+}
+
+.dp-carousel-item {
+    flex: 0 0 auto; /* Permite que los elementos se ajusten según el contenido, pero mantengan su tamaño si es necesario */
+    text-align: center;
+    padding: 10px 5px;
+    margin: 0 5px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.calendar-slot-color-primary-light {
+    background-color: var(--brand-pink-light); /* Usar variable */
+    border-color: transparent;
+    color: var(--brand-pink-accent); /* Usar variable */
+}
+
+.calendar-slot-color-primary-light .badge {
+    background-color: #1662c6;
+    color: transparent
+}
+
+.calendar-slot-color-primary-light .svg-icon:not([class*=svg-icon-color]) {
+    fill: #1662c6
+}
+
+.calendar-slot-color-calm-light {
+    background-color: var(--brand-pink-light); /* Usar variable */
+    border-color: transparent;
+    color: var(--brand-pink-accent); /* Usar variable */
+}
+
+.calendar-slot-color-calm-light .badge {
+    background-color: #8870d5;
+    color: transparent
+}
+
+.calendar-slot-color-calm-light .svg-icon:not([class*=svg-icon-color]) {
+    fill: #8870d5
+}
+
+.calendar-slot-booked {
+    color: var(--text-color-dark); /* Color de texto para slots ocupados */
+    cursor: not-allowed;
+    pointer-events: none;
+    text-decoration: line-through;
+    opacity: 0.6;
+    background-color: var(--brand-pink-medium) !important; /* Usar variable para fondo */
+    border: 1px solid var(--brand-pink-medium);
+}
+
+.calendar-slot-placeholder {
+    background-color: currentColor;
+    color: #edeff2;
+    pointer-events: none
+}
+
+.calendar-slot-placeholder-text {
+    color: #627282;
+    pointer-events: none
+}
+
+.calendar-day {
+    padding-left: 2px;
+    padding-right: 2px
+}
+
+.calendar-day-slots-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: grid; /* Desde .va-slots-list */
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Desde .va-slots-list */
+    gap: 10px; /* Desde .va-slots-list */
+}
+
+.calendar-hidden-slots-indicator-container {
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform .25s ease-out
+}
+
+.calendar-hidden-slots-indicator-container.v-enter,.calendar-hidden-slots-indicator-container.v-enter-active {
+    opacity: 0;
+    transform: translateY(100%)
+}
+
+.calendar-hidden-slots-indicator-container.v-leave-active {
+    opacity: 1;
+    transform: translateY(0)
+}
+
+.calendar-hidden-slots-indicator {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    color: transparent;
+    height: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: auto;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none
+}
+
+.dp-calendar-placeholder-full .calendar-day .calendar-day-date-placeholder {
+    min-height: 40px
+}
+
+.dp-calendar-placeholder-full .calendar-day .calendar-day-date-placeholder .btn {
+    background-color: #edeff2;
+    color: #edeff2;
+    cursor: default;
+    font-size: 0;
+    height: 10px;
+    line-height: 0;
+    max-width: 40px;
+    opacity: 1;
+    width: 100%
+}
+
+.dp-carousel .calendar-day-slots-list-item {
+    height: auto;
+    min-width: auto
+}
+
+.tns-outer {
+    padding: 0!important
+}
+
+.tns-outer [hidden] {
+    display: none!important
+}
+
+.tns-outer [aria-controls],.tns-outer [data-action] {
+    cursor: pointer
+}
+
+.tns-slider {
+    transition: all 0s
+}
+
+.tns-slider>.tns-item {
+    box-sizing: border-box
+}
+
+.tns-horizontal.tns-subpixel {
+    white-space: nowrap
+}
+
+.tns-horizontal.tns-subpixel>.tns-item {
+    display: inline-block;
+    vertical-align: top;
+    white-space: normal
+}
+
+.tns-horizontal.tns-no-subpixel:after {
+    clear: both;
+    content: "";
+    display: table
+}
+
+.tns-horizontal.tns-no-subpixel>.tns-item {
+    float: left
+}
+
+.tns-horizontal.tns-carousel.tns-no-subpixel>.tns-item {
+    margin-right: -100%
+}
+
+.tns-gallery,.tns-no-calc {
+    left: 0;
+    position: relative
+}
+
+.tns-gallery {
+    min-height: 1px
+}
+
+.tns-gallery>.tns-item {
+    left: -100%;
+    position: absolute;
+    transition: transform 0s,opacity 0s
+}
+
+.tns-gallery>.tns-moving {
+    transition: all .25s
+}
+
+.tns-autowidth {
+    display: inline-block
+}
+
+.tns-lazy-img {
+    opacity: .6;
+    transition: opacity .6s
+}
+
+.tns-lazy-img.tns-complete {
+    opacity: 1
+}
+
+.tns-ah {
+    transition: height 0s
+}
+
+.tns-ovh {
+    overflow: hidden
+}
+
+.tns-visually-hidden {
+    left: -10000em;
+    position: absolute
+}
+
+.tns-transparent {
+    opacity: 0;
+    visibility: hidden
+}
+
+.tns-fadeIn {
+    opacity: 1;
+    z-index: 0
+}
+
+.tns-fadeOut,.tns-normal {
+    opacity: 0;
+    z-index: -1
+}
+
+.tns-vpfix {
+    white-space: nowrap
+}
+
+.tns-vpfix>div,.tns-vpfix>li {
+    display: inline-block
+}
+
+.tns-t-subp2 {
+    height: 10px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    width: 310px
+}
+
+.tns-t-ct {
+    position: absolute;
+    right: 0;
+    width: 2333.3333333333%
+}
+
+.tns-t-ct:after {
+    clear: both;
+    content: "";
+    display: table
+}
+
+.tns-t-ct>div {
+    float: left;
+    height: 10px;
+    width: 1.4285714286%
+}
+
+.dp-carousel {
+    position: relative
+}
+
+.dp-carousel .tns-nav {
+    align-items: center;
+    display: flex;
+    justify-content: center; /* Cambiado a center */
+    margin-right: 0; /* Eliminado */
+    margin-top: 10px;
+    min-height: 12px;
+}
+
+.dp-carousel .tns-nav button {
+    background-color: var(--border-color); /* Usar variable */
+    border: 0;
+    border-radius: 50%;
+    height: 8px;
+    margin-left: 6px;
+    padding: 0;
+    width: 8px;
+}
+
+.dp-carousel-nav {
+    position: absolute;
+    top: calc(50% - 12px);
+    transform: translateY(-50%);
+    z-index: 1
+}
+
+.dp-carousel-nav.dp-carousel-nav-prev {
+    left: -10px
+}
+
+.dp-carousel-nav.dp-carousel-nav-next {
+    right: -10px
+}
+
+.dp-carousel-nav[disabled] {
+    visibility: hidden
+}
+
+.dp-calendar {
+    position: relative;
+    transform: translateZ(0)
+}
+
+@keyframes animationFrames {
+    0% {
+        transform: translate(0)
+    }
+
+    14% {
+        transform: translateY(5px)
+    }
+
+    67% {
+        transform: translate(0)
+    }
+
+    to {
+        transform: translate(0)
+    }
+}
+
+.dp-calendar .dp-calendar-more {
+    border-top: 1px solid #edeff2
+}
+
+.dp-calendar .dp-calendar-more .animated-icon {
+    top: 2px
+}
+
+.dp-calendar .dp-calendar-more-expanded .animated-icon {
+    animation: none;
+    transform: rotate(180deg)
+}
+
+.dp-calendar .dp-carousel {
+    position: static
+}
+
+.dp-calendar button.dp-carousel-nav {
+    background-color: transparent; /* Fondo transparente */
+    border: 2px solid var(--border-color); /* Borde desde .va-nav-button */
+    color: var(--brand-pink-accent); /* Color del icono */
+    border-radius: 50%;
+    width: 35px; /* Ancho desde .va-nav-button */
+    height: 35px; /* Alto desde .va-nav-button */
+    font-size: 20px; /* Tamaño del icono */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex; /* Para centrar el icono */
+    justify-content: center;
+    align-items: center;
+    top: calc(50% - 17.5px); /* Ajustar top para centrar verticalmente (la mitad del alto de 35px) */
+    transform: none; /* Eliminar transform */
+    box-shadow: none; /* Eliminar box-shadow */
+}
+
+.dp-calendar button.dp-carousel-nav.dp-carousel-nav-prev {
+    left: 10px; /* Ajustar posición */
+    right: auto; /* Desactivar right */
+}
+
+.dp-calendar button.dp-carousel-nav.dp-carousel-nav-next {
+    right: 10px; /* Ajustar posición */
+    left: auto; /* Desactivar left */
+}
+
+.dp-calendar button.dp-carousel-nav .svg-icon {
+    fill: var(--brand-pink-accent); /* Usar variable */
+}
+
+.dp-calendar .dp-calendar-state-message-range-overbooked {
+    background-color: #eef4fd;
+    border: 1px solid #dcdfe3;
+    border-radius: .2667rem;
+    max-width: -moz-fit-content;
+    max-width: fit-content
+}
+
+.dp-calendar-color-calm-light button.dp-carousel-nav {
+    background-color: #f3f0fa
+}
+
+.dp-calendar-color-calm-light button.dp-carousel-nav .svg-icon {
+    fill: #8870d5
+}
+
+.calendar-slot-color-pink-light {
+    background-color: var(--brand-pink-light); /* Rosa muy claro */
+    border-color: transparent;
+    color: var(--brand-pink-accent); /* Rosa principal */
+}
+
+.calendar-slot-color-pink-light .badge {
+    background-color: #e91e63;
+    color: transparent;
+}
+
+.calendar-slot-color-pink-light .svg-icon:not([class*=svg-icon-color]) {
+    fill: #e91e63;
+}
+
+/* En tu archivo CSS */
+#va-calendar-container.refreshing {
+    position: relative;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+#va-calendar-container.refreshing::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(0,0,0,0.1);
+    border-radius: 50%;
+    border-top-color: #3498db;
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+
+
+.calendar-day-date p {
+    font-size: 14px; /* Desde .va-date-day */
+    font-weight: 600; /* Desde .va-date-day */
+    display: block;
+}
+
+.calendar-day-date p.small {
+    font-size: 18px; /* Desde .va-date-month */
+    font-weight: 700; /* Desde .va-date-month */
+}
+
+.calendar-day-date-placeholder .btn {
+    background-color: var(--brand-pink-light); /* Usar variable */
+    color: var(--brand-pink-light); /* Usar variable */
+    height: 10px;
+    line-height: 0;
+    max-width: 40px;
+    opacity: 1;
+    width: 100%;
+    cursor: default;
+    font-size: 0; /* Ocultar el texto 'Cargando...' */
+}
+
+.calendar-day-slots-list-item.va-no-slots-message p {
+    color: #888; /* Color de texto del .va-header p */
+    font-size: 16px; /* Tamaño de fuente del .va-header p */
+    margin: 0;
+}
+
+.tns-nav button {
+    background-color: var(--border-color); /* Usar variable */
+    border: 0;
+    border-radius: 50%;
+    height: 8px;
+    margin-left: 6px;
+    padding: 0;
+    width: 8px;
+}

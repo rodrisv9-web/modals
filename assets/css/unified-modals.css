@@ -1,0 +1,510 @@
+/* ====================================================================
+   ESTILOS UNIFICADOS DE MODALES - HEREDADOS DEL MÓDULO DE PACIENTES
+   Aplicados a servicios y horarios para consistencia visual
+   ==================================================================== */
+
+/* Variables CSS para consistencia visual */
+:root {
+    --color-primary: #3182CE;
+    --color-primary-light: #EBF8FF;
+    --color-primary-dark: #2C5282;
+    --color-green: #10B981;
+    --color-orange: #f59e0b;
+    --color-red: #EF4444;
+    --color-gray-50: #F9FAFB;
+    --color-gray-100: #F3F4F6;
+    --color-gray-200: #E5E7EB;
+    --color-gray-300: #D1D5DB;
+    --color-gray-400: #9CA3AF;
+    --color-gray-500: #6B7280;
+    --color-gray-600: #4B5563;
+    --color-gray-700: #374151;
+    --color-gray-800: #1F2937;
+    --color-gray-900: #111827;
+    --color-white: #FFFFFF;
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+    --transition-base: 0.2s ease;
+    --transition-modal: 0.3s ease;
+}
+
+/* ====================================================================
+   ESTILOS UNIFICADOS PARA TODOS LOS MODALES
+   ==================================================================== */
+
+/* Overlay del modal */
+.modal-overlay,
+.va-modal,
+.mobile-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-modal), visibility var(--transition-modal);
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* Estados activos */
+.modal-overlay.visible,
+.va-modal.is-active,
+.mobile-modal-backdrop.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Contenido del modal */
+.modal-content,
+.va-modal .va-modal-content,
+.mobile-modal-content {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-modal);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.95);
+    transition: transform var(--transition-modal);
+    position: relative;
+    z-index: 1001;
+    margin: auto;
+}
+
+/* Animación de entrada */
+.modal-overlay.visible .modal-content,
+.va-modal.is-active .va-modal-content,
+.mobile-modal-backdrop.visible .mobile-modal-content {
+    transform: scale(1);
+}
+
+/* Animación de salida */
+.modal-overlay.is-closing .modal-content,
+.va-modal.is-closing .va-modal-content,
+.mobile-modal-content.is-closing {
+    transform: scale(0.95);
+}
+
+/* ====================================================================
+   ACTION SHEET MODALES (DESDE ABAJO)
+   ==================================================================== */
+
+/* Action Sheet específico */
+.modal-overlay.action-sheet .modal-content,
+.va-modal-bottom-sheet .va-modal-content {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: none;
+    width: 100%;
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    transform: translateY(100%);
+    padding: 1.5rem;
+    box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.15);
+    margin: 0;
+}
+
+/* Asegurar que el overlay del action sheet no tenga padding */
+.modal-overlay.action-sheet,
+.va-modal-bottom-sheet {
+    padding: 0;
+    align-items: flex-end;
+}
+
+/* Animación de entrada para action sheet */
+.modal-overlay.action-sheet.visible .modal-content,
+.va-modal-bottom-sheet.is-active .va-modal-content {
+    transform: translateY(0);
+}
+
+/* Animación de salida para action sheet */
+.modal-overlay.action-sheet.is-closing .modal-content,
+.va-modal-bottom-sheet.is-closing .va-modal-content {
+    transform: translateY(100%);
+}
+
+/* ====================================================================
+   HEADERS DE MODALES
+   ==================================================================== */
+
+.modal-header,
+.va-modal .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.5rem 0 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header h3,
+.va-modal .modal-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-gray-800);
+    margin: 0;
+}
+
+/* Action Sheet Header */
+.action-sheet-header {
+    padding: 1.5rem 1.5rem 0 1.5rem;
+    text-align: center;
+}
+
+.action-sheet-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-gray-800);
+    margin: 0;
+}
+
+/* ====================================================================
+   BOTONES DE CIERRE
+   ==================================================================== */
+
+.modal-close-btn,
+.va-modal .close-modal-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--color-gray-400);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-base);
+}
+
+.modal-close-btn:hover,
+.va-modal .close-modal-btn:hover {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-600);
+}
+
+/* ====================================================================
+   OPCIONES DE ACTION SHEET
+   ==================================================================== */
+
+.action-sheet-options {
+    padding: 1rem 1.5rem;
+}
+
+.action-option,
+.va-modal-action-button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+    background: none;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    margin-bottom: 0.75rem;
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.action-option:hover,
+.va-modal-action-button:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
+    transform: translateY(-2px);
+}
+
+.action-option.featured {
+    border-color: var(--color-orange);
+    background-color: rgba(245, 158, 11, 0.05);
+}
+
+.action-option.featured:hover {
+    border-color: var(--color-orange);
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+.action-option-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary-light);
+    border-radius: var(--border-radius);
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.action-option.featured .action-option-icon {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: var(--color-orange);
+}
+
+.action-option-text {
+    flex: 1;
+}
+
+.action-title {
+    display: block;
+    font-weight: 600;
+    color: var(--color-gray-800);
+    margin-bottom: 0.25rem;
+}
+
+.action-subtitle {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-gray-500);
+}
+
+/* Botones específicos de va-modal */
+.va-modal-action-button.primary-button {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: 1px solid var(--color-primary);
+}
+
+.va-modal-action-button.primary-button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.va-modal-action-button.secondary-button {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary-light);
+}
+
+.va-modal-action-button.secondary-button:hover {
+    background-color: var(--color-primary-light);
+}
+
+.va-modal-action-button.danger-button {
+    background-color: transparent;
+    color: var(--color-red);
+    border: none;
+}
+
+.va-modal-action-button.danger-button:hover {
+    color: var(--color-red);
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* Botón de cancelar */
+.action-sheet-cancel {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--color-gray-100);
+    border: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    color: var(--color-gray-600);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition-base);
+}
+
+.action-sheet-cancel:hover {
+    background-color: var(--color-gray-200);
+}
+
+/* ====================================================================
+   FORMULARIOS EN MODALES
+   ==================================================================== */
+
+.modal-content form,
+.va-modal .va-modal-content form {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    min-width: 400px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 500;
+    color: var(--color-gray-700);
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--border-radius);
+    font-size: 16px; /* Previene el zoom automático en iOS */
+    transition: border-color var(--transition-base);
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+.form-hint {
+    font-size: 0.875rem;
+    color: var(--color-gray-500);
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-700);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-gray-200);
+    transform: translateY(-1px);
+}
+
+/* ====================================================================
+   MODALES FULL SCREEN
+   ==================================================================== */
+
+.modal-overlay.full-screen .modal-content,
+.va-modal-full-screen .va-modal-content {
+    border-radius: 12px;
+    max-width: 800px;
+    width: 90%;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: transform var(--transition-modal), opacity var(--transition-modal);
+    margin: auto;
+}
+
+/* Asegurar que el overlay del full-screen tenga padding adecuado */
+.modal-overlay.full-screen,
+.va-modal-full-screen {
+    padding: 2rem;
+}
+
+.modal-overlay.full-screen.visible .modal-content,
+.va-modal-full-screen.is-active .va-modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-overlay.full-screen.is-closing .modal-content,
+.va-modal-full-screen.is-closing .va-modal-content {
+    transform: scale(0.9);
+    opacity: 0;
+}
+
+/* ====================================================================
+   RESPONSIVE DESIGN
+   ==================================================================== */
+
+@media (max-width: 768px) {
+    .modal-content,
+    .va-modal .va-modal-content {
+        width: 95%;
+        max-width: none;
+        margin: 1rem auto;
+    }
+    
+    .modal-content form,
+    .va-modal .va-modal-content form {
+        padding: 0 1rem 1rem 1rem; /* Padding reducido para móviles */
+        min-width: auto;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+}
+
+/* ====================================================================
+   ANIMACIONES KEYFRAME
+   ==================================================================== */
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(100%); 
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0); 
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from { 
+        transform: translateY(0); 
+        opacity: 1; 
+    }
+    to { 
+        transform: translateY(100%); 
+        opacity: 0; 
+    }
+}
+
+@keyframes scaleIn {
+    from { 
+        transform: scale(0.95); 
+        opacity: 0;
+    }
+    to { 
+        transform: scale(1); 
+        opacity: 1;
+    }
+}
+
+@keyframes scaleOut {
+    from { 
+        transform: scale(1); 
+        opacity: 1;
+    }
+    to { 
+        transform: scale(0.95); 
+        opacity: 0;
+    }
+}
