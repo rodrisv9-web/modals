@@ -105,11 +105,11 @@ if (!empty($services)) {
             </div>
         </div>
         
-        <button class="add-new-item-btn" id="add-appointment-btn" title="Añadir cita">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-            </svg>
-        </button>
+        <div class="button-group" style="margin-left: auto;">
+            <button data-modal-id="view-appointment-modal" class="btn btn-primary"><i class="fa-solid fa-eye"></i> Ver Detalles de Cita</button>
+            <button data-modal-id="booking-wizard-modal" class="btn btn-secondary"><i class="fa-solid fa-magic-wand-sparkles"></i> Crear Cita (Wizard)</button>
+            <button data-modal-id="logbook-modal" class="btn btn-primary" style="background-color: #3B82F6;"><i class="fa-solid fa-book-medical"></i> Registrar Bitácora</button>
+        </div>
 
         <!-- ESTRUCTURA MÓVIL (<=480px) - Solo visible en móviles -->
         <!-- FILA 1: [Volver] [Cambio de Vista] [+] -->
@@ -157,197 +157,125 @@ if (!empty($services)) {
         </div>
     </div>
 
-    <div id="appointment-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <button type="button" class="modal-close-x" aria-label="Cerrar modal">&times;</button>
-            <h3 id="modal-title" class="modal-title">Detalles de la Cita</h3>
-            <div id="modal-details" class="modal-details"></div>
-            
-            <!-- SECCIÓN PARA CAMBIAR ESTADO -->
-            <div class="modal-section">
-                <p class="modal-section-title">Cambiar estado de la cita:</p>
-                <div id="status-buttons-container" class="status-buttons-grid">
-                    <!-- Los botones se generan dinámicamente aquí -->
+    <!-- MODAL 1: Ver Detalles de Cita -->
+    <div id="view-appointment-modal" class="modal-overlay">
+        <div class="modal-content modal-small">
+            <div class="modal-handle"></div>
+            <header class="modal-header">
+                <div>
+                    <h3 class="modal-title">Detalles de la Cita</h3>
+                    <div style="display: inline-flex; margin-top: 0.5rem; align-items: center; gap: 0.5rem; padding: 0.25rem 0.75rem; background-color: var(--green-100); color: var(--green-800); font-size: 0.875rem; font-weight: 500; border-radius: 99px;"><i class="fa-solid fa-check-circle"></i> Confirmada</div>
+                </div>
+                <button class="modal-close-btn" aria-label="Cerrar modal"><i class="fa-solid fa-times"></i></button>
+            </header>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="info-card">
+                    <p class="info-card-header">CLIENTE Y MASCOTA</p>
+                    <div class="info-card-body">
+                        <div class="info-card-row"><i class="fa-solid fa-user info-card-icon"></i><span class="info-card-data strong">Carlos López</span></div>
+                        <div class="info-card-row"><i class="fa-solid fa-paw info-card-icon"></i><span class="info-card-data">Rocky (Pastor Alemán)</span></div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <p class="info-card-header">FECHA Y SERVICIO</p>
+                    <div class="info-card-body">
+                        <div class="info-card-row"><i class="fa-solid fa-scissors info-card-icon"></i><span class="info-card-data strong">Corte de Pelo y Baño</span></div>
+                        <div class="info-card-row"><i class="fa-solid fa-calendar-day info-card-icon"></i><span class="info-card-data">Jueves, 2 de Octubre, 2025</span></div>
+                        <div class="info-card-row"><i class="fa-solid fa-clock info-card-icon"></i><span class="info-card-data">12:00 PM - 1:00 PM</span></div>
+                    </div>
                 </div>
             </div>
-
-            
+            <footer class="modal-footer"><button class="btn btn-light">Cancelar Cita</button><button class="btn btn-primary">Completar y Registrar</button></footer>
         </div>
     </div>
 
-    <!-- <-- INICIO DEL CAMBIO: Proyecto Chocovainilla - Paso 1.1 --> -->
-    <div id="agenda-booking-wizard-modal" class="modal-overlay hidden">
-        <div class="modal-content large">
-            <div class="modal-header">
-                <h3 id="wizard-title" class="modal-title">Agendar Nueva Cita</h3>
-                <button id="wizard-close-btn" class="modal-close-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div id="wizard-body" class="modal-body">
-
-                <div class="wizard-step active" data-step="1">
-                    <h4 class="wizard-step-title">Paso 1: Identificar al Cliente</h4>
-                    <div class="form-group">
-                        <label for="wizard-client-search" class="form-label">Buscar cliente por nombre o email</label>
-                        <input type="text" id="wizard-client-search" class="form-input" placeholder="Comienza a escribir para buscar...">
-                    </div>
-                    <div id="wizard-search-results" class="search-results-container">
-                        <p class="text-center text-gray-500">Introduce al menos 3 caracteres para buscar.</p>
-                    </div>
-                    <div class="form-actions" style="justify-content: center; margin-top: 1rem;">
-                        <button id="wizard-new-client-btn" class="btn-secondary">
-                            <i class="fas fa-user-plus"></i> Registrar Cliente Nuevo
-                        </button>
-                    </div>
+    <!-- MODAL 2: Asistente para Agendar -->
+    <div id="booking-wizard-modal" class="modal-overlay">
+        <div class="modal-content modal-large">
+            <div class="modal-handle"></div>
+            <header class="modal-header"><h3 class="modal-title">Agendar Nueva Cita</h3><button class="modal-close-btn" aria-label="Cerrar modal"><i class="fa-solid fa-times"></i></button></header>
+            <div class="modal-body">
+                <div class="progress-bar">
+                    <div class="progress-step active" data-step="1"><div class="progress-step-number">1</div><span class="progress-step-label">Cliente</span></div>
+                    <div style="flex-grow: 1; border-top: 2px solid var(--gray-200); margin: 0 1rem;"></div>
+                    <div class="progress-step" data-step="2"><div class="progress-step-number">2</div><span class="progress-step-label">Mascota</span></div>
+                    <div style="flex-grow: 1; border-top: 2px solid var(--gray-200); margin: 0 1rem;"></div>
+                    <div class="progress-step" data-step="3"><div class="progress-step-number">3</div><span class="progress-step-label">Servicio y Hora</span></div>
+                    <div style="flex-grow: 1; border-top: 2px solid var(--gray-200); margin: 0 1rem;"></div>
+                    <div class="progress-step" data-step="4"><div class="progress-step-number">4</div><span class="progress-step-label">Confirmar</span></div>
                 </div>
 
-                <div class="wizard-step" data-step="1.5" style="display: none;">
-                    <h4 class="wizard-step-title">Paso 1.5: Registrar Cliente Nuevo</h4>
-                    <form id="wizard-client-form-inline">
-                        <div class="form-group">
-                            <label for="wizard-client-name-inline" class="form-label">Nombre del Cliente *</label>
-                            <input type="text" id="wizard-client-name-inline" name="client-name" class="form-input" required placeholder="Ej: Ana García Martínez">
+                <div class="wizard-step-content active" data-step="1">
+                    <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Identificar al Cliente</h4><p style="font-size: 0.875rem; color: #6B7280;">Busca un cliente existente o registra uno nuevo.</p></div>
+                    <div class="form-group"><div class="input-with-icon"><i class="fa-solid fa-search"></i><input id="client-search-input" type="text" class="form-input" placeholder="Buscar por nombre, email..."></div></div>
+                    <div id="client-search-results" style="border: 1px solid var(--gray-200); border-radius: 0.5rem; background-color: #F9FAFB; padding: 1rem; margin-top: 1rem; color: #6B7280; font-size: 0.875rem;"><p style="text-align: center;">Introduce al menos 3 caracteres para buscar.</p></div>
+                </div>
+
+                <div class="wizard-step-content" data-step="2">
+                     <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Seleccionar Mascota</h4><p style="font-size: 0.875rem; color: #6B7280;">Elige la mascota para la cita o añade una nueva.</p></div>
+                     <div id="wizard-client-info" style="background-color: var(--purple-100); color: var(--purple-800); padding: 0.75rem; border-radius: 0.5rem; text-align: center; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;"></div>
+                     <div id="wizard-pet-list" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+                </div>
+
+                <div class="wizard-step-content" data-step="2.5">
+                    <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Registrar Nueva Mascota</h4><p id="wizard-new-pet-subtitle" style="font-size: 0.875rem; color: #6B7280;"></p></div>
+                    <form id="wizard-new-pet-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="form-group"><label for="new-pet-name" class="form-label">Nombre de la Mascota</label><input type="text" id="new-pet-name" class="form-input" required></div>
+                        <div class="grid grid-cols-2-md">
+                            <div class="form-group"><label for="new-pet-species" class="form-label">Especie</label><select id="new-pet-species" class="form-select"><option>Perro</option><option>Gato</option><option>Otro</option></select></div>
+                            <div class="form-group"><label for="new-pet-breed" class="form-label">Raza (Opcional)</label><input type="text" id="new-pet-breed" class="form-input"></div>
                         </div>
-                        <div class="form-group">
-                            <label for="wizard-client-email-inline" class="form-label">Correo Electrónico</label>
-                            <input type="email" id="wizard-client-email-inline" name="client-email" class="form-input" placeholder="ana.garcia@email.com">
-                            <small class="form-help">Se enviará una invitación automática si se proporciona email</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="wizard-client-phone-inline" class="form-label">Teléfono</label>
-                            <div class="phone-input-group">
-                                <select id="wizard-client-phone-code-inline" name="client-phone-code" class="form-input phone-code-select">
-                                    <option value="+52">🇲🇽 +52 MX</option>
-                                    <option value="+1">🇺🇸 +1 US</option>
-                                    <option value="+1">🇨🇦 +1 CA</option>
-                                    <option value="+34">🇪🇸 +34 ES</option>
-                                    <option value="+44">🇬🇧 +44 UK</option>
-                                    <option value="+33">🇫🇷 +33 FR</option>
-                                    <option value="+49">🇩🇪 +49 DE</option>
-                                    <option value="+39">🇮🇹 +39 IT</option>
-                                    <option value="+7">🇷🇺 +7 RU</option>
-                                    <option value="+81">🇯🇵 +81 JP</option>
-                                    <option value="+86">🇨🇳 +86 CN</option>
-                                    <option value="+55">🇧🇷 +55 BR</option>
-                                    <option value="+54">🇦🇷 +54 AR</option>
-                                    <option value="+57">🇨🇴 +57 CO</option>
-                                    <option value="+56">🇨🇱 +56 CL</option>
-                                    <option value="+58">🇻🇪 +58 VE</option>
-                                    <option value="+503">🇸🇻 +503 SV</option>
-                                    <option value="+505">🇳🇮 +505 NI</option>
-                                    <option value="+506">🇨🇷 +506 CR</option>
-                                    <option value="+507">🇵🇦 +507 PA</option>
-                                    <option value="+502">🇬🇹 +502 GT</option>
-                                    <option value="+504">🇭🇳 +504 HN</option>
-                                </select>
-                                <input type="tel" id="wizard-client-phone-inline" name="client-phone" class="form-input phone-number-input" placeholder="Número local (ej: 555 123 4567)">
-                            </div>
-                            <small class="form-help">Selecciona la lada y escribe el número local</small>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" id="wizard-back-to-search-inline" class="btn-secondary">Volver a Búsqueda</button>
-                            <button type="submit" class="btn-primary" id="wizard-create-client-inline">Crear Cliente</button>
-                        </div>
+                         <div class="form-actions" style="margin-top: 1rem; padding-top: 0; border: none; justify-content: flex-end;"><button type="submit" class="btn btn-primary">Guardar Mascota</button></div>
                     </form>
                 </div>
 
-                <div class="wizard-step" data-step="2" style="display: none;">
-                    <h4 class="wizard-step-title">Paso 2: Seleccionar Mascota</h4>
-                    <p>Cliente: <strong id="wizard-selected-client-name"></strong></p>
-                    <div id="wizard-pet-selection" class="pet-selection-container">
-                        </div>
-                    <div class="form-actions" style="margin-top: 1rem;">
-                        <button id="wizard-back-to-search-btn" class="btn-secondary">Volver a la Búsqueda</button>
-                        <button id="wizard-new-pet-btn" class="btn-primary">
-                            <i class="fas fa-plus"></i> Registrar Mascota Nueva
-                        </button>
-                    </div>
-                </div>
-
-                <div class="wizard-step" data-step="2.5" style="display: none;">
-                    <h4 class="wizard-step-title">Paso 2.5: Registrar Mascota Nueva</h4>
-                    <p>Cliente: <strong id="wizard-selected-client-name-pet"></strong></p>
-                    <form id="wizard-pet-form-inline">
-                        <div class="form-group">
-                            <label for="wizard-pet-name-inline" class="form-label">Nombre de la Mascota *</label>
-                            <input type="text" id="wizard-pet-name-inline" name="pet-name" class="form-input" required placeholder="Ej: Luna">
-                        </div>
-                        <div class="form-group">
-                            <label for="wizard-pet-species-inline" class="form-label">Especie *</label>
-                            <select id="wizard-pet-species-inline" name="pet-species" class="form-input" required>
-                                <option value="">Selecciona una especie</option>
-                                <option value="dog">Perro</option>
-                                <option value="cat">Gato</option>
-                                <option value="bird">Ave</option>
-                                <option value="rabbit">Conejo</option>
-                                <option value="other">Otro</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="wizard-pet-breed-inline" class="form-label">Raza</label>
-                            <input type="text" id="wizard-pet-breed-inline" name="pet-breed" class="form-input" placeholder="Ej: Labrador, Siamés, etc.">
-                        </div>
-                        <div class="form-group">
-                            <label for="wizard-pet-gender-inline" class="form-label">Género</label>
-                            <select id="wizard-pet-gender-inline" name="pet-gender" class="form-input">
-                                <option value="unknown">No especificar</option>
-                                <option value="male">Macho</option>
-                                <option value="female">Hembra</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="wizard-pet-share-code-inline" class="form-label">Share Code</label>
-                            <div class="input-group">
-                                <input type="text" id="wizard-pet-share-code-inline" name="pet-share-code" class="form-input" readonly placeholder="Se genera automáticamente">
-                                <button type="button" class="btn-secondary" id="wizard-regenerate-code-inline">🔄</button>
+                <div class="wizard-step-content" data-step="3">
+                    <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Servicio y Horario</h4><p id="wizard-service-subtitle" style="font-size: 0.875rem; color: #6B7280;"></p></div>
+                     <div class="grid grid-cols-3-md">
+                        <div class="form-group"><label class="form-label" for="wiz-category">Categoría</label><select id="wiz-category" class="form-select"></select></div>
+                        <div class="form-group"><label class="form-label" for="wiz-service">Servicio</label><select id="wiz-service" class="form-select" disabled><option>Elige una categoría primero</option></select></div>
+                        <div class="form-group"><label class="form-label" for="wiz-date">Fecha</label><input type="date" id="wiz-date" class="form-input" value="2025-10-02"></div>
+                     </div>
+                     <div class="form-group">
+                        <label class="form-label">Horarios Disponibles</label>
+                        <div id="wiz-slots-container">
+                            <div id="wiz-slots-wrapper">
+                                <div id="wiz-slots" style="color: #9CA3AF; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 0.5rem; text-align: center;">Elige un servicio</div>
                             </div>
-                            <small class="form-help">Este código se enviará al cliente por email para vincular su mascota</small>
+                            <div id="wiz-slots-pagination"></div>
                         </div>
-                        <div class="form-actions">
-                            <button type="button" id="wizard-back-to-pets-inline" class="btn-secondary">Volver a Mascotas</button>
-                            <button type="submit" class="btn-primary" id="wizard-create-pet-inline">Crear Mascota</button>
-                        </div>
-                    </form>
+                     </div>
                 </div>
 
-                <div class="wizard-step" data-step="3" style="display: none;">
-                    <h4 class="wizard-step-title">Paso 3: Seleccionar Servicio y Horario</h4>
-                    <p>Agendando para: <strong id="wizard-selected-pet-name"></strong></p>
-                    
-                                                    <div id="wizard-scheduling-interface" class="service-selection-layout">
-                                    <div class="category-tabs">
-                                    </div>
-                                    <div class="service-list-content">
-                                    </div>
-                                    <div class="time-selection-content" style="display: none;">
-                                        <div class="va-calendar-wrapper">
-                                            <div id="va-calendar-header"></div>
-                                            <div id="va-calendar-grid"></div>
-                                        </div>
-                                        <div id="va-slots-container" class="time-slots-wrapper">
-                                            <p class="initial-message">Selecciona una fecha para ver los horarios.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                    <div class="form-actions" style="margin-top: 1rem;">
-                        <button id="wizard-back-to-pets-btn" class="btn-secondary">Volver a Mascotas</button>
-                        <button id="wizard-confirm-appointment-btn" class="btn-primary" disabled>Confirmar Cita</button>
-                    </div>
+                <div class="wizard-step-content" data-step="4">
+                    <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Confirmar Cita</h4><p style="font-size: 0.875rem; color: #6B7280;">Revisa los detalles antes de confirmar.</p></div>
+                    <div id="wizard-summary" style="display: flex; flex-direction: column; gap: 1rem;"></div>
                 </div>
-
             </div>
+            <footer class="modal-footer">
+                <button class="btn btn-light" data-wizard-action="back" style="display: none;">Anterior</button>
+                <button class="btn btn-primary" data-wizard-action="next" disabled>Siguiente</button>
+                <button class="btn btn-secondary" data-wizard-action="confirm" style="display: none;">Confirmar Cita</button>
+            </footer>
         </div>
-        <script>
-            // Mensaje de depuración para verificar la carga del nuevo HTML
-            console.log("✅ Chocovainilla: Nuevo HTML del Wizard de Agendamiento cargado en el DOM.");
-        </script>
     </div>
-    <!-- <-- FIN DEL CAMBIO: Proyecto Chocovainilla - Paso 1.1 --> -->
 
-    <!-- El modal de la bitácora ha sido eliminado. La funcionalidad ahora está integrada en #appointment-modal -->
+    <!-- MODAL 3: Registrar en Bitácora -->
+    <div id="logbook-modal" class="modal-overlay">
+        <div class="modal-content modal-large">
+            <div class="modal-handle"></div>
+            <header class="modal-header"><h3 class="modal-title">Registrar en Bitácora</h3><button class="modal-close-btn" aria-label="Cerrar modal"><i class="fa-solid fa-times"></i></button></header>
+            <div class="modal-body">
+                <div class="info-card" style="margin-bottom: 1.5rem;"><p class="info-card-header">REGISTRANDO PARA LA CITA</p><div class="info-card-body"><div class="info-card-row"><i class="fa-solid fa-paw info-card-icon"></i><span class="info-card-data strong">Rocky (Corte de Pelo y Baño)</span></div></div></div>
+                <form style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="form-group"><label class="form-label" for="log-title">Título / Motivo de la Visita</label><input type="text" id="log-title" class="form-input" value="Corte de Pelo y Baño" required></div>
+                    <div class="form-group"><label class="form-label" for="log-vaccine">Vacuna Aplicada (Opcional)</label><select id="log-vaccine" class="form-select"><option value="">Ninguna</option><option value="rabia">Vacuna Antirrábica</option><option value="polivalente">Vacuna Polivalente</option></select></div>
+                    <div class="form-group"><label class="form-label" for="log-notes">Observaciones y Notas</label><textarea id="log-notes" class="form-textarea" placeholder="Añade cualquier observación relevante..."></textarea></div>
+                </form>
+            </div>
+            <footer class="modal-footer"><button class="btn btn-light">Completar sin Registrar</button><button class="btn btn-primary">Guardar y Completar Cita</button></footer>
+        </div>
+    </div>
 </div>
 
 <script type="application/json" id="agenda-initial-data">
