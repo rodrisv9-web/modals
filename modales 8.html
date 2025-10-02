@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup Completo de Modales de Agenda (CSS Nativo)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --modal-primary-color: #6D28D9;
+            --modal-primary-light: #F5F3FF;
+            --modal-secondary-color: #10B981;
+            --modal-danger-color: #EF4444;
+            --modal-font-family: 'Inter', sans-serif;
+            --modal-transition-speed: 0.3s;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --green-100: #D1FAE5;
+            --green-800: #065F46;
+            --purple-100: #EDE9FE;
+            --purple-500: #8B5CF6;
+            --purple-800: #5B21B6;
+        }
+
+        body {
+            font-family: var(--modal-font-family);
+            background-color: #F3F4F6;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 42rem;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .container > p {
+            color: #4B5563;
+            margin-bottom: 2rem;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        @media (min-width: 640px) {
+            .button-group {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--modal-transition-speed) ease, visibility 0s var(--modal-transition-speed);
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        .modal-overlay:not(.hidden) {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        .modal-content {
+            background-color: white;
+            transition: transform var(--modal-transition-speed) cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+            box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-overlay:not(.hidden) .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-handle {
+            margin: 0.75rem auto;
+            width: 3rem;
+            height: 4px;
+            background-color: #D1D5DB;
+            border-radius: 99px;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .modal-overlay {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .modal-content {
+                position: relative;
+                bottom: auto; left: auto; right: auto;
+                border-radius: 1.5rem;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                transform: scale(0.95);
+                max-width: 550px;
+                width: 90%;
+            }
+            .modal-overlay:not(.hidden) .modal-content { transform: scale(1); }
+            .modal-handle { display: none; }
+        }
+        
+        @media (min-width: 768px) {
+            .modal-content.modal-small { max-width: 400px; }
+            .modal-content.modal-large { max-width: 800px; }
+            .modal-content.modal-xlarge { max-width: 1100px; }
+        }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 1.5rem 1.5rem 1rem; flex-shrink: 0; }
+        .modal-header h3, .modal-title { font-size: 1.25rem; font-weight: 700; color: #1F2937; margin: 0; }
+        .modal-close-btn { background: transparent; border: none; color: #9CA3AF; font-size: 1.5rem; cursor: pointer; padding: 0; transition: color 0.2s ease; }
+        .modal-close-btn:hover { color: #374151; }
+        .modal-body { padding: 0 1.5rem 1.5rem; overflow-y: auto; flex-grow: 1; }
+        .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid #F3F4F6; background-color: #F9FAFB; display: flex; flex-direction: column-reverse; gap: 0.75rem; flex-shrink: 0; }
+
+        @media (min-width: 768px) {
+            .modal-footer { flex-direction: row; justify-content: flex-end; }
+        }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.25rem; border-radius: 0.75rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s ease; width: 100%; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
+        @media (min-width: 768px) { .btn { width: auto; } }
+
+        .btn-primary { background-color: var(--modal-primary-color); color: white; }
+        .btn-primary:hover { background-color: #5B21B6; }
+        .btn-primary:disabled { background-color: #a78bfa; cursor: not-allowed; }
+        .btn-secondary { background-color: var(--modal-secondary-color); color: white; }
+        .btn-secondary:hover { background-color: #059669; }
+        .btn-light { background-color: #F3F4F6; color: #374151; }
+        .btn-light:hover { background-color: #E5E7EB; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-weight: 500; margin-bottom: 0.5rem; color: #374151; font-size: 0.875rem; }
+        .form-input, .form-textarea, .form-select { width: 100%; padding: 0.65rem 1rem; border: 1px solid #D1D5DB; border-radius: 0.5rem; box-sizing: border-box; transition: all 0.2s ease; background-color: white; font-size: 1rem; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: var(--modal-primary-color); box-shadow: 0 0 0 3px var(--modal-primary-light); }
+        .form-textarea { min-height: 100px; }
+        .input-with-icon { position: relative; }
+        .input-with-icon i { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #9CA3AF; }
+        .input-with-icon .form-input { padding-left: 2.5rem; }
+        
+        .grid { display: grid; gap: 1rem; }
+        .grid-cols-2-md { grid-template-columns: 1fr; }
+        @media (min-width: 768px) { .grid-cols-2-md { grid-template-columns: 1fr 1fr; } }
+        .grid-cols-3-md { grid-template-columns: 1fr; }
+        @media (min-width: 768px) { .grid-cols-3-md { grid-template-columns: 1fr 1fr 1fr; } }
+
+
+        .wizard-step-content { display: none; }
+        .wizard-step-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .progress-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .progress-step { display: flex; align-items: center; gap: 0.5rem; color: #9CA3AF; font-size: 0.875rem; font-weight: 500; }
+        .progress-step-number { width: 1.5rem; height: 1.5rem; border-radius: 99px; border: 2px solid #D1D5DB; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .progress-step.active .progress-step-number { border-color: var(--modal-primary-color); background-color: var(--modal-primary-color); color: white; }
+        .progress-step.active .progress-step-label { color: #1F2937; }
+        .progress-step .progress-step-label { display: none; }
+        @media (min-width: 768px) { .progress-step .progress-step-label { display: inline; } }
+        
+        #wiz-slots-wrapper { overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
+        #wiz-slots-wrapper::-webkit-scrollbar { display: none; }
+        #wiz-slots { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; }
+
+        .slot-page { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; scroll-snap-align: start; }
+        .time-slot { padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 0.5rem; cursor: pointer; text-align: center; user-select: none; font-size: 0.875rem; background-color: white; color: #374151; }
+        .time-slot.selected { background-color: var(--modal-primary-color); border-color: var(--modal-primary-color); color: white; font-weight: 600; }
+        .time-slot:hover:not(.selected) { background: #F8FAFC; }
+        #wiz-slots-pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; }
+        .pagination-dot { width: 8px; height: 8px; border-radius: 50%; background: #D1D5DB; cursor: pointer; transition: background 0.2s ease; display: inline-block; }
+        .pagination-dot.active { background-color: var(--modal-primary-color); }
+        @media (max-width: 767px) {
+            .slot-page { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+            .time-slot { font-size: 0.8125rem; padding: 0.625rem 0.375rem; }
+        }
+
+        .client-selector, .pet-selector {
+            padding: 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: white;
+        }
+        .client-selector:hover, .pet-selector:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+        .pet-selector.selected {
+            background-color: var(--purple-100);
+            border-color: var(--purple-500);
+        }
+        #add-new-pet-btn {
+            padding: 1rem;
+            border: 2px dashed var(--gray-400);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: var(--gray-100);
+            color: var(--gray-500);
+            font-weight: 600;
+        }
+        #add-new-pet-btn:hover {
+            border-color: var(--modal-primary-color);
+            background-color: var(--modal-primary-light);
+            color: var(--modal-primary-color);
+        }
+        
+        .info-card { background-color: #F9FAFB; padding: 1rem; border-radius: 0.75rem; }
+        .info-card-header { font-size: 0.875rem; font-weight: 500; color: #6B7280; }
+        .info-card-body { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .info-card-row { display: flex; align-items: center; gap: 0.75rem; }
+        .info-card-icon { width: 1.25rem; text-align: center; color: #9CA3AF; }
+        .info-card-data { color: #374151; }
+        .info-card-data.strong { font-weight: 600; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Mockup de Modales de Agenda</h1>
+        <p>Haz clic en los botones para previsualizar los diferentes modales del módulo de agenda con el nuevo diseño responsivo.</p>
+        <div class="button-group">
+            <button data-modal-id="view-appointment-modal" class="btn btn-primary"><i class="fa-solid fa-eye"></i> Ver Detalles de Cita</button>
+            <button data-modal-id="booking-wizard-modal" class="btn btn-secondary"><i class="fa-solid fa-magic-wand-sparkles"></i> Crear Cita (Wizard)</button>
+            <button data-modal-id="logbook-modal" class="btn btn-primary" style="background-color: #3B82F6;"><i class="fa-solid fa-book-medical"></i> Registrar Bitácora</button>
+        </div>
+    </div>
+
+    <!-- MODAL 1: Ver Detalles de Cita -->
+    <div id="view-appointment-modal" class="modal-overlay hidden">
+        <div class="modal-content modal-small">
+            <div class="modal-handle"></div>
+            <header class="modal-header">
+                <div>
+                    <h3 class="modal-title">Detalles de la Cita</h3>
+                    <div style="display: inline-flex; margin-top: 0.5rem; align-items: center; gap: 0.5rem; padding: 0.25rem 0.75rem; background-color: var(--green-100); color: var(--green-800); font-size: 0.875rem; font-weight: 500; border-radius: 99px;"><i class="fa-solid fa-check-circle"></i> Confirmada</div>
+                </div>
+                <button class="modal-close-btn" aria-label="Cerrar modal"><i class="fa-solid fa-times"></i></button>
+            </header>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="info-card">
+                    <p class="info-card-header">CLIENTE Y MASCOTA</p>
+                    <div class="info-card-body">
+                        <div class="info-card-row"><i class="fa-solid fa-user info-card-icon"></i><span class="info-card-data strong">Carlos López</span></div>
+                        <div class="info-card-row"><i class="fa-solid fa-paw info-card-icon"></i><span class="info-card-data">Rocky (Pastor Alemán)</span></div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <p class="info-card-header">FECHA Y SERVICIO</p>
+                    <div class="info-card-body">
+                        <div class="info-card-row"><i class="fa-solid fa-scissors info-card-icon"></i><span class="info-card-data strong">Corte de Pelo y Baño</span></div>
+                        <div class="info-card-row"><i class="fa-solid fa-calendar-day info-card-icon"></i><span class="info-card-data">Jueves, 2 de Octubre, 2025</span></div>
+                        <div class="info-card-row"><i class="fa-solid fa-clock info-card-icon"></i><span class="info-card-data">12:00 PM - 1:00 PM</span></div>
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer"><button class="btn btn-light">Cancelar Cita</button><button class="btn btn-primary">Completar y Registrar</button></footer>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Asistente para Agendar -->
+    <div id="booking-wizard-modal" class="modal-overlay hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-handle"></div>
+            <header class="modal-header"><h3 class="modal-title">Agendar Nueva Cita</h3><button class="modal-close-btn" aria-label="Cerrar modal"><i class="fa-solid fa-times"></i></button></header>
+            <div class="modal-body">
+                <div class="progress-bar">
+                    <div class="progress-step active" data-step="1"><div class="progress-step-number">1</div><span class="progress-step-label">Cliente</span></div>
+                    <div style="flex-grow: 1; border-top: 2px solid var(--gray-200); margin: 0 1rem;"></div>
+                    <div class="progress-step" data-step="2"><div class="progress-step-number">2</div><span class="progress-step-label">Mascota</span></div>
+                    <div style="flex-grow: 1; border-top: 2px solid var(--gray-200); margin: 0 1rem;"></div>
+                    <div class="progress-step" data-step="3"><div class="progress-step-number">3</div><span class="progress-step-label">Servicio y Hora</span></div>
+                    <div style="flex-grow: 1; border-top: 2px solid var(--gray-200); margin: 0 1rem;"></div>
+                    <div class="progress-step" data-step="4"><div class="progress-step-number">4</div><span class="progress-step-label">Confirmar</span></div>
+                </div>
+
+                <div class="wizard-step-content active" data-step="1">
+                    <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Identificar al Cliente</h4><p style="font-size: 0.875rem; color: #6B7280;">Busca un cliente existente o registra uno nuevo.</p></div>
+                    <div class="form-group"><div class="input-with-icon"><i class="fa-solid fa-search"></i><input id="client-search-input" type="text" class="form-input" placeholder="Buscar por nombre, email..."></div></div>
+                    <div id="client-search-results" style="border: 1px solid var(--gray-200); border-radius: 0.5rem; background-color: #F9FAFB; padding: 1rem; margin-top: 1rem; color: #6B7280; font-size: 0.875rem;"><p style="text-align: center;">Introduce al menos 3 caracteres para buscar.</p></div>
+                </div>
+
+                <div class="wizard-step-content" data-step="2">
+                     <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Seleccionar Mascota</h4><p style="font-size: 0.875rem; color: #6B7280;">Elige la mascota para la cita o añade una nueva.</p></div>
+                     <div id="wizard-client-info" style="background-color: var(--purple-100); color: var(--purple-800); padding: 0.75rem; border-radius: 0.5rem; text-align: center; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;"></div>
+                     <div id="wizard-pet-list" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+                </div>
+
+                <div class="wizard-step-content" data-step="2.5">
+                    <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Registrar Nueva Mascota</h4><p id="wizard-new-pet-subtitle" style="font-size: 0.875rem; color: #6B7280;"></p></div>
+                    <form id="wizard-new-pet-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="form-group"><label for="new-pet-name" class="form-label">Nombre de la Mascota</label><input type="text" id="new-pet-name" class="form-input" required></div>
+                        <div class="grid grid-cols-2-md">
+                            <div class="form-group"><label for="new-pet-species" class="form-label">Especie</label><select id="new-pet-species" class="form-select"><option>Perro</option><option>Gato</option><option>Otro</option></select></div>
+                            <div class="form-group"><label for="new-pet-breed" class="form-label">Raza (Opcional)</label><input type="text" id="new-pet-breed" class="form-input"></div>
+                        </div>
+                         <div class="form-actions" style="margin-top: 1rem; padding-top: 0; border: none; justify-content: flex-end;"><button type="submit" class="btn btn-primary">Guardar Mascota</button></div>
+                    </form>
+                </div>
+                
+                <div class="wizard-step-content" data-step="3">
+                    <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Servicio y Horario</h4><p id="wizard-service-subtitle" style="font-size: 0.875rem; color: #6B7280;"></p></div>
+                     <div class="grid grid-cols-3-md">
+                        <div class="form-group"><label class="form-label" for="wiz-category">Categoría</label><select id="wiz-category" class="form-select"></select></div>
+                        <div class="form-group"><label class="form-label" for="wiz-service">Servicio</label><select id="wiz-service" class="form-select" disabled><option>Elige una categoría primero</option></select></div>
+                        <div class="form-group"><label class="form-label" for="wiz-date">Fecha</label><input type="date" id="wiz-date" class="form-input" value="2025-10-02"></div>
+                     </div>
+                     <div class="form-group">
+                        <label class="form-label">Horarios Disponibles</label>
+                        <div id="wiz-slots-container">
+                            <div id="wiz-slots-wrapper">
+                                <div id="wiz-slots" style="color: #9CA3AF; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 0.5rem; text-align: center;">Elige un servicio</div>
+                            </div>
+                            <div id="wiz-slots-pagination"></div>
+                        </div>
+                     </div>
+                </div>
+
+                <div class="wizard-step-content" data-step="4">
+                    <div style="text-align: center; margin-bottom: 1.5rem;"><h4 style="font-size: 1.125rem; font-weight: 700; color: #1F2937;">Confirmar Cita</h4><p style="font-size: 0.875rem; color: #6B7280;">Revisa los detalles antes de confirmar.</p></div>
+                    <div id="wizard-summary" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-light" data-wizard-action="back" style="display: none;">Anterior</button>
+                <button class="btn btn-primary" data-wizard-action="next" disabled>Siguiente</button>
+                <button class="btn btn-secondary" data-wizard-action="confirm" style="display: none;">Confirmar Cita</button>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- MODAL 3: Registrar en Bitácora -->
+    <div id="logbook-modal" class="modal-overlay hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-handle"></div>
+            <header class="modal-header"><h3 class="modal-title">Registrar en Bitácora</h3><button class="modal-close-btn" aria-label="Cerrar modal"><i class="fa-solid fa-times"></i></button></header>
+            <div class="modal-body">
+                <div class="info-card" style="margin-bottom: 1.5rem;"><p class="info-card-header">REGISTRANDO PARA LA CITA</p><div class="info-card-body"><div class="info-card-row"><i class="fa-solid fa-paw info-card-icon"></i><span class="info-card-data strong">Rocky (Corte de Pelo y Baño)</span></div></div></div>
+                <form style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="form-group"><label class="form-label" for="log-title">Título / Motivo de la Visita</label><input type="text" id="log-title" class="form-input" value="Corte de Pelo y Baño" required></div>
+                    <div class="form-group"><label class="form-label" for="log-vaccine">Vacuna Aplicada (Opcional)</label><select id="log-vaccine" class="form-select"><option value="">Ninguna</option><option value="rabia">Vacuna Antirrábica</option><option value="polivalente">Vacuna Polivalente</option></select></div>
+                    <div class="form-group"><label class="form-label" for="log-notes">Observaciones y Notas</label><textarea id="log-notes" class="form-textarea" placeholder="Añade cualquier observación relevante..."></textarea></div>
+                </form>
+            </div>
+            <footer class="modal-footer"><button class="btn btn-light">Completar sin Registrar</button><button class="btn btn-primary">Guardar y Completar Cita</button></footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mockClients = [
+                { id: 1, name: 'Carlos López', email: 'carlos.lopez@example.com', pets: [{id: 101, name: 'Rocky', species: 'Pastor Alemán'}] },
+                { id: 2, name: 'Ana García', email: 'ana.garcia@example.com', pets: [{id: 102, name: 'Luna', species: 'Golden Retriever'}, {id: 103, name: 'Misha', species: 'Gato Siamés'}] },
+                { id: 3, name: 'Pedro Martinez', email: 'pedro.martinez@example.com', pets: [] }
+            ];
+            const mockCategories = [
+                { id: 1, name: 'Consultas', services: [{id: 201, name: 'Consulta General'}, {id: 202, name: 'Consulta de Especialidad'}] },
+                { id: 2, name: 'Estética', services: [{id: 203, name: 'Corte de Pelo y Baño'}, {id: 204, name: 'Baño Antipulgas'}] },
+                { id: 3, name: 'Cirugías', services: [{id: 205, name: 'Esterilización'}, {id: 206, name: 'Limpieza Dental'}] }
+            ];
+             const mockSlots = ["09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM", "06:00 PM"];
+
+            const modalButtons = document.querySelectorAll('button[data-modal-id]');
+            function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }}
+            function hideModal(modal) { if (!modal) return; const isMobile = window.innerWidth < 768; const transformValue = isMobile ? 'translateY(100%)' : 'scale(0.95)'; const content = modal.querySelector('.modal-content'); if (content) content.style.transform = transformValue; modal.style.opacity = '0'; setTimeout(() => { modal.classList.add('hidden'); if (modal.style) modal.style.opacity = ''; if (content && content.style) content.style.transform = ''; const isAnyModalVisible = document.querySelector('.modal-overlay:not(.hidden)'); if (!isAnyModalVisible) { document.body.style.overflow = ''; }}, 300); }
+            modalButtons.forEach(button => button.addEventListener('click', () => showModal(button.dataset.modalId)));
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', (event) => { if (event.target === overlay) hideModal(overlay); });
+                const closeBtn = overlay.querySelector('.modal-close-btn');
+                if (closeBtn) closeBtn.addEventListener('click', () => hideModal(overlay));
+            });
+            document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { const visibleModal = document.querySelector('.modal-overlay:not(.hidden)'); if (visibleModal) hideModal(visibleModal); } });
+
+            const wizardModal = document.getElementById('booking-wizard-modal');
+            if(wizardModal) {
+                const wizardState = { currentStep: 1, totalSteps: 4, selectedClient: null, selectedPet: null, selectedService: null, selectedDate: '2025-10-02', selectedSlot: null };
+                const backBtn = wizardModal.querySelector('[data-wizard-action="back"]');
+                const nextBtn = wizardModal.querySelector('[data-wizard-action="next"]');
+                const confirmBtn = wizardModal.querySelector('[data-wizard-action="confirm"]');
+                
+                function updateWizardView() {
+                    const currentStepFloat = parseFloat(wizardState.currentStep);
+                    const mainStep = Math.floor(currentStepFloat);
+
+                    wizardModal.querySelectorAll('.wizard-step-content').forEach(s => s.classList.remove('active'));
+                    wizardModal.querySelector(`.wizard-step-content[data-step="${wizardState.currentStep}"]`).classList.add('active');
+                    wizardModal.querySelectorAll('.progress-step').forEach(s => { s.classList.remove('active'); if (parseInt(s.dataset.step) <= mainStep) s.classList.add('active'); });
+
+                    backBtn.style.display = currentStepFloat > 1 ? 'inline-flex' : 'none';
+                    nextBtn.style.display = currentStepFloat < wizardState.totalSteps && currentStepFloat !== 2.5 ? 'inline-flex' : 'none';
+                    confirmBtn.style.display = currentStepFloat === wizardState.totalSteps ? 'inline-flex' : 'none';
+                    nextBtn.disabled = true;
+
+                    wizardModal.querySelector('.modal-title').textContent = `Agendar Cita - Paso ${mainStep}/${wizardState.totalSteps}`;
+
+                    if(currentStepFloat === 1) nextBtn.disabled = !wizardState.selectedClient;
+                    if(currentStepFloat === 2) { 
+                        document.getElementById('wizard-client-info').textContent = `Cliente: ${wizardState.selectedClient.name}`;
+                        const petList = document.getElementById('wizard-pet-list');
+                        petList.innerHTML = wizardState.selectedClient.pets.map(p => `<div class="pet-selector" data-pet-id="${p.id}"><div style="display: flex; align-items: center; gap: 1rem;"><div style="font-size: 1.5rem;">🐾</div><div><div style="font-weight: 700;">${p.name}</div><div style="font-size: 0.875rem; color: #6B7280;">${p.species}</div></div></div><i class="fa-solid fa-chevron-right" style="color: #9CA3AF;"></i></div>`).join('') + `<div id="add-new-pet-btn"><i class="fa-solid fa-plus" style="margin-right: 0.5rem;"></i>Añadir Nueva Mascota</div>`;
+                        nextBtn.disabled = !wizardState.selectedPet;
+                    }
+                    if(currentStepFloat === 2.5) {
+                        document.getElementById('wizard-new-pet-subtitle').textContent = `Para el cliente: ${wizardState.selectedClient.name}`;
+                        document.getElementById('wizard-new-pet-form').reset();
+                    }
+                    if(currentStepFloat === 3) {
+                        document.getElementById('wizard-service-subtitle').textContent = `Elige el servicio y la fecha para la cita de ${wizardState.selectedPet.name}.`;
+                        nextBtn.disabled = !(wizardState.selectedService && wizardState.selectedDate && wizardState.selectedSlot);
+                    }
+                    if(currentStepFloat === 4) {
+                        document.getElementById('wizard-summary').innerHTML = `<div class="info-card"><p class="info-card-header">CLIENTE Y MASCOTA</p><div class="info-card-body"><div class="info-card-row"><i class="fa-solid fa-user info-card-icon"></i><span class="info-card-data strong">${wizardState.selectedClient.name}</span></div><div class="info-card-row"><i class="fa-solid fa-paw info-card-icon"></i><span class="info-card-data">${wizardState.selectedPet.name} (${wizardState.selectedPet.species})</span></div></div></div><div class="info-card"><p class="info-card-header">FECHA Y SERVICIO</p><div class="info-card-body"><div class="info-card-row"><i class="fa-solid fa-tag info-card-icon"></i><span class="info-card-data strong">${wizardState.selectedService.name}</span></div><div class="info-card-row"><i class="fa-solid fa-calendar-day info-card-icon"></i><span class="info-card-data">${new Date(wizardState.selectedDate).toLocaleDateString('es-ES', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}</span></div><div class="info-card-row"><i class="fa-solid fa-clock info-card-icon"></i><span class="info-card-data">${wizardState.selectedSlot}</span></div></div></div>`;
+                    }
+                }
+
+                wizardModal.querySelector('#wizard-pet-list').addEventListener('click', e => {
+                    const petDiv = e.target.closest('.pet-selector');
+                    const addPetBtn = e.target.closest('#add-new-pet-btn');
+                    if (petDiv) {
+                        wizardState.selectedPet = wizardState.selectedClient.pets.find(p => p.id == petDiv.dataset.petId);
+                        nextBtn.disabled = false;
+                        wizardModal.querySelectorAll('.pet-selector').forEach(el => el.classList.remove('selected'));
+                        petDiv.classList.add('selected');
+                    }
+                    if (addPetBtn) {
+                        wizardState.currentStep = 2.5;
+                        updateWizardView();
+                    }
+                });
+
+                document.getElementById('wizard-new-pet-form').addEventListener('submit', (ev) => {
+                    ev.preventDefault();
+                    const newPetNameInput = document.getElementById('new-pet-name');
+                    if (!newPetNameInput.value.trim()) { alert('El nombre de la mascota es obligatorio.'); return; }
+                    const newPet = { id: Date.now(), name: newPetNameInput.value, species: document.getElementById('new-pet-species').value };
+                    wizardState.selectedClient.pets.push(newPet);
+                    wizardState.selectedPet = newPet;
+                    wizardState.currentStep = 3;
+                    updateWizardView();
+                });
+
+                document.getElementById('client-search-input').addEventListener('input', e => {
+                    const term = e.target.value.toLowerCase();
+                    const resultsContainer = document.getElementById('client-search-results');
+                    if (term.length < 3) { resultsContainer.innerHTML = '<p style="text-align: center;">Introduce al menos 3 caracteres para buscar.</p>'; return; }
+                    const results = mockClients.filter(c => c.name.toLowerCase().includes(term) || c.email.toLowerCase().includes(term));
+                    resultsContainer.innerHTML = results.length ? results.map(c => `<div class="client-selector" data-client-id="${c.id}"><div><div style="font-weight: 700;">${c.name}</div><div style="font-size: 0.875rem; color: #6B7280;">${c.email}</div></div><i class="fa-solid fa-chevron-right" style="color: #9CA3AF;"></i></div>`).join('') : '<p style="text-align: center;">No se encontraron clientes.</p>';
+                });
+
+                document.getElementById('client-search-results').addEventListener('click', e => {
+                    const clientDiv = e.target.closest('.client-selector');
+                    if (clientDiv) {
+                        wizardState.selectedClient = mockClients.find(c => c.id == clientDiv.dataset.clientId);
+                        wizardState.currentStep = 2;
+                        updateWizardView();
+                    }
+                });
+
+                const categorySelect = document.getElementById('wiz-category');
+                const serviceSelect = document.getElementById('wiz-service');
+                categorySelect.innerHTML = `<option value="">Elige una categoría</option>` + mockCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                
+                categorySelect.addEventListener('change', e => {
+                    const catId = e.target.value;
+                    const category = mockCategories.find(c => c.id == catId);
+                    serviceSelect.innerHTML = `<option value="">Elige un servicio</option>` + (category ? category.services.map(s => `<option value="${s.id}">${s.name}</option>`).join('') : '');
+                    serviceSelect.disabled = !category;
+                    wizardState.selectedService = null;
+                    wizardState.selectedSlot = null;
+                    document.getElementById('wiz-slots-container').innerHTML = `<div id="wiz-slots-wrapper"><div id="wiz-slots" style="color: #9CA3AF; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 0.5rem; text-align: center;">Elige un servicio</div></div><div id="wiz-slots-pagination"></div>`;
+                    nextBtn.disabled = true;
+                });
+                
+                serviceSelect.addEventListener('change', e => {
+                    const serviceId = e.target.value;
+                    if(serviceId) {
+                       const category = mockCategories.find(c => c.services.some(s => s.id == serviceId));
+                       wizardState.selectedService = category.services.find(s => s.id == serviceId);
+                       renderSlotsCarousel(mockSlots);
+                       wizardState.selectedSlot = null;
+                       nextBtn.disabled = true;
+                    } else {
+                        wizardState.selectedService = null;
+                        wizardState.selectedSlot = null;
+                        document.getElementById('wiz-slots-container').innerHTML = `<div id="wiz-slots-wrapper"><div id="wiz-slots" style="color: #9CA3AF; padding: 0.5rem; border: 1px solid #E5E7EB; border-radius: 0.5rem; text-align: center;">Elige un servicio</div></div><div id="wiz-slots-pagination"></div>`;
+                        nextBtn.disabled = true;
+                    }
+                });
+                
+                function renderSlotsCarousel(slots) {
+                    const slotsPerPage = window.innerWidth < 768 ? 6 : 8; 
+                    const totalPages = Math.ceil(slots.length / slotsPerPage);
+                    const slotsContainer = document.getElementById('wiz-slots-container');
+                    
+                    let carouselHTML = `<div id="wiz-slots-wrapper"><div id="wiz-slots">`;
+                    for(let i = 0; i < totalPages; i++) {
+                        carouselHTML += `<div class="slot-page">`;
+                        const pageSlots = slots.slice(i * slotsPerPage, (i + 1) * slotsPerPage);
+                        carouselHTML += pageSlots.map(slot => `<div class="time-slot">${slot}</div>`).join('');
+                        carouselHTML += `</div>`;
+                    }
+                    carouselHTML += `</div></div><div id="wiz-slots-pagination"></div>`;
+
+                    slotsContainer.innerHTML = carouselHTML;
+                    
+                    const paginationContainer = document.getElementById('wiz-slots-pagination');
+                    if (totalPages > 1) {
+                       paginationContainer.innerHTML = '';
+                       for(let i = 0; i < totalPages; i++) {
+                           paginationContainer.innerHTML += `<div class="pagination-dot ${i === 0 ? 'active' : ''}" data-page="${i}"></div>`;
+                       }
+                    }
+
+                    const wrapper = document.getElementById('wiz-slots-wrapper');
+                    paginationContainer.addEventListener('click', e => {
+                        const dot = e.target.closest('.pagination-dot');
+                        if (dot) {
+                            const pageIndex = parseInt(dot.dataset.page);
+                            wrapper.scrollLeft = pageIndex * wrapper.offsetWidth;
+                            paginationContainer.querySelectorAll('.pagination-dot').forEach(d => d.classList.remove('active'));
+                            dot.classList.add('active');
+                        }
+                    });
+
+                    document.getElementById('wiz-slots').addEventListener('click', e => {
+                        const slotDiv = e.target.closest('.time-slot');
+                        if(slotDiv) {
+                            wizardState.selectedSlot = slotDiv.textContent;
+                             document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+                             slotDiv.classList.add('selected');
+                             nextBtn.disabled = !(wizardState.selectedService && wizardState.selectedDate && wizardState.selectedSlot);
+                        }
+                    });
+                }
+
+                nextBtn.addEventListener('click', () => { if (parseFloat(wizardState.currentStep) < wizardState.totalSteps) { wizardState.currentStep = Math.floor(wizardState.currentStep) + 1; updateWizardView(); } });
+                backBtn.addEventListener('click', () => { 
+                    if (wizardState.currentStep === 2.5) { wizardState.currentStep = 2; }
+                    else if (wizardState.currentStep > 1) { wizardState.currentStep = Math.ceil(wizardState.currentStep) - 1; }
+                    updateWizardView(); 
+                });
+                confirmBtn.addEventListener('click', () => { alert('¡Cita Confirmada! (Simulación)'); hideModal(wizardModal); });
+                
+                const closeBtn = wizardModal.querySelector('.modal-close-btn');
+                if (closeBtn) { closeBtn.addEventListener('click', () => { setTimeout(() => { wizardState.currentStep = 1; wizardState.selectedClient = null; wizardState.selectedPet = null; updateWizardView(); }, 300); });}
+            }
+        });
+    </script>
+</body>
+</html>
+
