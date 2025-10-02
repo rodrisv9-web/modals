@@ -13,8 +13,7 @@ const AgendaWizard = (function ($) {
         currentClientPets: [],
         // <-- Propiedades nuevas para el agendamiento -->
         servicesAndCategories: [],
-        selectedService: { id: null, duration: null },
-        currentCalendarDate: new Date(),
+        selectedService: { id: null, duration: null, name: null },
         selectedDate: null,
         selectedSlot: null,
     };
@@ -28,14 +27,16 @@ const AgendaWizard = (function ($) {
         dom.modal = modal;
         dom.title = modal.find('#wizard-title');
         dom.steps = modal.find('.wizard-step');
+        dom.progressSteps = modal.find('.progress-step');
         dom.closeBtn = modal.find('#wizard-close-btn');
         dom.clientSearchInput = modal.find('#wizard-client-search');
         dom.searchResultsContainer = modal.find('#wizard-search-results');
-        // <-- Nuevos elementos del DOM para el Paso 3 -->
-        dom.schedulingInterface = modal.find('#wizard-scheduling-interface');
-        dom.calendarHeader = modal.find('#va-calendar-header');
-        dom.calendarGrid = modal.find('#va-calendar-grid');
-        dom.slotsContainer = modal.find('#va-slots-container');
+        dom.categorySelect = modal.find('#wiz-category');
+        dom.serviceSelect = modal.find('#wiz-service');
+        dom.dateInput = modal.find('#wiz-date');
+        dom.slotsWrapper = modal.find('#wiz-slots');
+        dom.slotsWrapperContainer = modal.find('#wiz-slots-wrapper');
+        dom.slotsPagination = modal.find('#wiz-slots-pagination');
         dom.confirmBtn = modal.find('#wizard-confirm-appointment-btn');
         console.log('🔧 DOM cacheado:', {
             modal: dom.modal.length,
@@ -74,48 +75,40 @@ const AgendaWizard = (function ($) {
         });
         
         // <-- INICIO DE NUEVOS EVENTOS: Proyecto Chocovainilla - Paso 1.5/1.6 -->
-        dom.modal.on('change', '#wizard-category-select', function() {
-            const categoryId = $(this).val();
-            const serviceSelect = dom.modal.find('#wizard-service-select');
-
-            if (categoryId) {
-                const selectedCategory = state.servicesAndCategories.find(cat => cat.category_id == categoryId);
-                if (selectedCategory && selectedCategory.services.length > 0) {
-                    let serviceOptions = '<option value="">-- Selecciona un servicio --</option>';
-                    selectedCategory.services.forEach(service => {
-                        serviceOptions += `<option value="${service.service_id}" data-duration="${service.duration}">${service.name} ($${parseFloat(service.price).toFixed(2)})</option>`;
-                    });
-                    serviceSelect.html(serviceOptions).prop('disabled', false);
-                } else {
-                    serviceSelect.html('<option value="">-- No hay servicios en esta categoría --</option>').prop('disabled', true);
-                }
-            } else {
-                serviceSelect.html('<option value="">-- Primero elige una categoría --</option>').prop('disabled', true);
-            }
+        dom.modal.on('change', '#wiz-category', function() {
+            handleCategorySelection($(this).val());
         });
 
-        dom.modal.on('change', '#wizard-service-select', function() {
+        dom.modal.on('change', '#wiz-service', function() {
             const selectedOption = $(this).find('option:selected');
             const serviceId = selectedOption.val();
             if (serviceId) {
                 const duration = selectedOption.data('duration');
-                handleServiceSelection(serviceId, duration);
+                const name = selectedOption.data('service-name') || selectedOption.text();
+                handleServiceSelection(serviceId, duration, name);
+            } else {
+                state.selectedService = { id: null, duration: null, name: null };
+                state.selectedSlot = null;
+                updateSlotsMessage('Selecciona un servicio para ver los horarios disponibles.');
+                dom.confirmBtn.prop('disabled', true);
             }
         });
 
-        dom.calendarHeader.on('click', '#prev-month-btn', () => changeMonth(-1));
-        dom.calendarHeader.on('click', '#next-month-btn', () => changeMonth(1));
-        
-        dom.calendarGrid.on('click', '.calendar-day:not(.disabled, .not-in-month)', function() {
-             dom.calendarGrid.find('.calendar-day').removeClass('selected');
-             $(this).addClass('selected');
-             state.selectedDate = $(this).data('date');
-             fetchAndRenderSlots(state.selectedDate);
+        dom.modal.on('change', '#wiz-date', function() {
+            const selectedDate = $(this).val();
+            state.selectedDate = selectedDate || null;
+            console.log('📅 Wizard: Fecha seleccionada', state.selectedDate);
+            if (state.selectedService.id && state.selectedDate) {
+                fetchAndRenderSlots(state.selectedDate);
+            } else {
+                dom.confirmBtn.prop('disabled', true);
+                updateSlotsMessage('Selecciona un servicio y fecha para ver horarios.');
+            }
         });
 
-        dom.slotsContainer.on('click', '.time-slot', function() {
+        dom.modal.on('click', '#wiz-slots .time-slot', function() {
             state.selectedSlot = $(this).data('time');
-            dom.slotsContainer.find('.time-slot').removeClass('selected');
+            dom.slotsWrapper.find('.time-slot').removeClass('selected');
             $(this).addClass('selected');
             dom.confirmBtn.prop('disabled', false);
         });
@@ -200,12 +193,14 @@ const AgendaWizard = (function ($) {
         dom.modal.removeClass('hidden');
         setTimeout(() => {
             dom.modal.addClass('visible');
+            dom.modal.find('.modal-content').addClass('show');
             console.log("   - Clases DESPUÉS de modificar:", typeof dom.modal.attr === 'function' ? dom.modal.attr('class') : dom.modal[0]?.className);
             console.log("   - Modal ahora visible.");
         }, 10);
     }
 
     function close() {
+        dom.modal.find('.modal-content').removeClass('show');
         dom.modal.removeClass('visible');
         setTimeout(() => {
             dom.modal.addClass('hidden');
@@ -219,6 +214,17 @@ const AgendaWizard = (function ($) {
         dom.steps.hide().removeClass('active');
         dom.steps.filter(`[data-step="${stepNumber}"]`).show().addClass('active');
         console.log(`🔷 Chocovainilla Wizard: Mostrando paso ${stepNumber}`);
+
+        const mainStep = Math.floor(stepNumber);
+        if (dom.progressSteps && dom.progressSteps.length) {
+            dom.progressSteps.removeClass('active');
+            dom.progressSteps.each(function() {
+                const step = parseInt($(this).data('progress-step'), 10);
+                if (step <= mainStep) {
+                    $(this).addClass('active');
+                }
+            });
+        }
 
         // Lógica específica para cada paso
         if (stepNumber === 1.5) {
@@ -252,14 +258,26 @@ const AgendaWizard = (function ($) {
         state.selectedClientEmail = null;
         state.selectedClientPhone = null;
         state.currentClientPets = [];
+        state.servicesAndCategories = [];
         state.selectedPetId = null;
-        state.selectedService = { id: null, duration: null };
-        state.selectedDate = null;
+        state.selectedService = { id: null, duration: null, name: null };
+        const today = new Date();
+        const isoToday = today.toISOString().split('T')[0];
+        state.selectedDate = isoToday;
         state.selectedSlot = null;
-        state.currentCalendarDate = new Date();
         dom.clientSearchInput.val('');
         dom.searchResultsContainer.html('<p class="text-center text-gray-500">Introduce al menos 3 caracteres para buscar.</p>');
-        dom.confirmBtn.prop('disabled', true);
+        if (dom.categorySelect && dom.categorySelect.length) {
+            dom.categorySelect.val('').prop('disabled', true);
+        }
+        if (dom.serviceSelect && dom.serviceSelect.length) {
+            dom.serviceSelect.html('<option value="">Selecciona una categoría primero</option>').prop('disabled', true);
+        }
+        if (dom.dateInput && dom.dateInput.length) {
+            dom.dateInput.attr('min', isoToday).val(isoToday);
+        }
+        updateSlotsMessage('Selecciona un servicio para ver los horarios disponibles.');
+        dom.confirmBtn.prop('disabled', true).text('Confirmar cita');
     }
 
     // --- Lógica de Búsqueda y Vinculación (sin cambios) ---
@@ -382,15 +400,22 @@ const AgendaWizard = (function ($) {
 
         const petsHtml = petsArray.map(pet => {
             const hasAccess = (typeof pet.has_access !== 'undefined') ? (parseInt(pet.has_access) === 1) : professionalAccess.includes(pet.pet_id);
+            const petName = pet && pet.name ? pet.name : `Mascota ${pet.pet_id}`;
+            const petSpecies = pet && pet.species ? pet.species : 'Especie no especificada';
             return `
                 <div class="pet-item ${hasAccess ? 'selectable' : 'locked'}" data-pet-id="${pet.pet_id}">
-                    <div>
-                        <strong>${pet.name}</strong> (${pet.species})
+                    <div class="pet-item-main">
+                        <div class="pet-item-avatar" aria-hidden="true">🐾</div>
+                        <div class="pet-item-info">
+                            <div class="pet-item-name">${petName}</div>
+                            <div class="pet-item-meta">${petSpecies}</div>
+                        </div>
+                        ${hasAccess ? '<i class="fas fa-chevron-right" aria-hidden="true"></i>' : ''}
                     </div>
                     ${!hasAccess ?
                         `<div class="unlock-section">
                             <input type="text" id="share-code-${pet.pet_id}" class="form-input" placeholder="Share-Code">
-                            <button class="btn btn-secondary unlock-btn" data-pet-id="${pet.pet_id}">Desbloquear</button>
+                            <button type="button" class="btn btn-secondary unlock-btn" data-pet-id="${pet.pet_id}">Desbloquear</button>
                         </div>` :
                         ''
                     }
@@ -440,115 +465,142 @@ const AgendaWizard = (function ($) {
         const pet = (state.currentClientPets || []).find(p => String(p.pet_id) === String(petId));
         const labelClientName = state.selectedClientName || '';
         const labelPetName = pet && pet.name ? pet.name : `Mascota ${petId}`;
-        $('#wizard-selected-pet-name').text(labelClientName ? `${labelPetName} (${labelClientName})` : `${labelPetName}`);
+        const subtitle = labelClientName ? `${labelPetName} · ${labelClientName}` : `${labelPetName}`;
+        $('#wizard-selected-pet-name').text(`Agendando para ${subtitle}`);
         showStep(3);
     }
 
     // <-- INICIO DE NUEVAS FUNCIONES: Proyecto Chocovainilla - Paso 1.5/1.6 -->
     function loadServicesAndCategories() {
-        console.log("🔄 Chocovainilla Wizard: Cargando servicios y categorías...");
-        dom.schedulingInterface.find('.service-list-content').html('<p>Cargando...</p>');
-        
+        console.log('🔄 Chocovainilla Wizard: Cargando servicios y categorías...');
+        if (dom.categorySelect && dom.categorySelect.length) {
+            dom.categorySelect.prop('disabled', true).html('<option value="">Cargando categorías...</option>');
+        }
+        if (dom.serviceSelect && dom.serviceSelect.length) {
+            dom.serviceSelect.prop('disabled', true).html('<option value="">Selecciona una categoría primero</option>');
+        }
+        updateSlotsMessage('Selecciona un servicio para ver los horarios disponibles.');
+
         $.ajax({
             url: VA_REST.api_url + `professionals/${state.professionalId}/services-and-categories`,
             beforeSend: function (xhr) { xhr.setRequestHeader('X-WP-Nonce', VA_REST.api_nonce); }
         }).done(function(response) {
             if (response.success) {
                 state.servicesAndCategories = response.data;
-                console.log("✅ Chocovainilla Wizard: Servicios cargados:", state.servicesAndCategories);
+                console.log('✅ Chocovainilla Wizard: Servicios cargados:', state.servicesAndCategories);
                 renderServicesInterface();
+            } else {
+                updateSlotsMessage('No fue posible cargar los servicios disponibles.');
             }
+        }).fail(function() {
+            updateSlotsMessage('Ocurrió un error al consultar los servicios.');
         });
     }
 
     function renderServicesInterface() {
-        if (!state.servicesAndCategories || state.servicesAndCategories.length === 0) {
-            dom.schedulingInterface.html('<p>No hay servicios configurados.</p>');
+        if (!dom.categorySelect || !dom.categorySelect.length) {
             return;
         }
 
-        const categoryOptions = state.servicesAndCategories.map(cat => `
-            <option value="${cat.category_id}">${cat.name}</option>
-        `).join('');
-
-        const dropdownsHtml = `
-            <div class="form-group">
-                <label for="wizard-category-select" class="form-label">Categoría</label>
-                <select id="wizard-category-select" class="form-input">
-                    <option value="">-- Selecciona una categoría --</option>
-                    ${categoryOptions}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="wizard-service-select" class="form-label">Servicio</label>
-                <select id="wizard-service-select" class="form-input" disabled>
-                    <option value="">-- Primero elige una categoría --</option>
-                </select>
-            </div>
-        `;
-
-        dom.modal.find('.category-tabs').html(dropdownsHtml);
-        dom.modal.find('.service-list-content').html('').hide();
-    }
-
-    function handleServiceSelection(serviceId, duration) {
-        state.selectedService = { id: serviceId, duration: duration };
-        console.log(`🔧 Chocovainilla Wizard: Servicio seleccionado ID ${serviceId}, Duración ${duration} min.`);
-        
-        dom.modal.find('.service-list-content, .category-tabs').hide();
-        dom.modal.find('.time-selection-content').show();
-        renderCalendar();
-    }
-
-    function changeMonth(direction) {
-        state.currentCalendarDate.setMonth(state.currentCalendarDate.getMonth() + direction);
-        renderCalendar();
-    }
-
-    function renderCalendar() {
-        dom.slotsContainer.html('<p class="initial-message">Selecciona una fecha para ver los horarios.</p>');
-        dom.confirmBtn.prop('disabled', true);
-        const date = state.currentCalendarDate;
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-        
-        dom.calendarHeader.html(`<button id="prev-month-btn" aria-label="Mes anterior"><i class="fas fa-chevron-left"></i></button><span id="va-calendar-month-year">${monthNames[month]} ${year}</span><button id="next-month-btn" aria-label="Mes siguiente"><i class="fas fa-chevron-right"></i></button>`);
-        
-        let gridHtml = '<div class="calendar-day-name">D</div><div class="calendar-day-name">L</div><div class="calendar-day-name">M</div><div class="calendar-day-name">M</div><div class="calendar-day-name">J</div><div class="calendar-day-name">V</div><div class="calendar-day-name">S</div>';
-        const firstDayIndex = (new Date(year, month, 1).getDay()) % 7; // Domingo = 0
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        for (let i = 0; i < firstDayIndex; i++) gridHtml += '<div class="calendar-day not-in-month"></div>';
-        for (let i = 1; i <= daysInMonth; i++) {
-            const dayDate = new Date(year, month, i);
-            let classes = 'calendar-day';
-            if (dayDate < today) classes += ' disabled';
-            const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-            gridHtml += `<div class="${classes}" data-date="${dateString}">${i}</div>`;
+        if (!state.servicesAndCategories || state.servicesAndCategories.length === 0) {
+            dom.categorySelect.html('<option value="">No hay categorías disponibles</option>').prop('disabled', true);
+            dom.serviceSelect.html('<option value="">Sin servicios disponibles</option>').prop('disabled', true);
+            updateSlotsMessage('No hay servicios configurados para este profesional.');
+            return;
         }
-        dom.calendarGrid.html(gridHtml);
+
+        const options = ['<option value="">Selecciona una categoría</option>'];
+        state.servicesAndCategories.forEach(cat => {
+            options.push(`<option value="${cat.category_id}">${cat.name}</option>`);
+        });
+
+        dom.categorySelect.html(options.join('')).prop('disabled', false);
+        dom.serviceSelect.html('<option value="">Selecciona una categoría primero</option>').prop('disabled', true);
+    }
+
+    function handleCategorySelection(categoryId) {
+        if (!dom.serviceSelect || !dom.serviceSelect.length) return;
+
+        state.selectedService = { id: null, duration: null, name: null };
+        state.selectedSlot = null;
+        dom.confirmBtn.prop('disabled', true);
+
+        if (!categoryId) {
+            dom.serviceSelect.html('<option value="">Selecciona una categoría primero</option>').prop('disabled', true);
+            updateSlotsMessage('Selecciona un servicio para ver los horarios disponibles.');
+            return;
+        }
+
+        const selectedCategory = state.servicesAndCategories.find(cat => String(cat.category_id) === String(categoryId));
+        if (!selectedCategory || !Array.isArray(selectedCategory.services) || selectedCategory.services.length === 0) {
+            dom.serviceSelect.html('<option value="">No hay servicios en esta categoría</option>').prop('disabled', true);
+            updateSlotsMessage('No hay horarios disponibles para esta categoría.');
+            return;
+        }
+
+        const serviceOptions = ['<option value="">Selecciona un servicio</option>'];
+        selectedCategory.services.forEach(service => {
+            serviceOptions.push(`<option value="${service.service_id}" data-duration="${service.duration}" data-service-name="${service.name}">${service.name}</option>`);
+        });
+
+        dom.serviceSelect.html(serviceOptions.join('')).prop('disabled', false);
+        updateSlotsMessage('Selecciona un servicio para ver los horarios disponibles.');
+    }
+
+    function handleServiceSelection(serviceId, duration, name) {
+        state.selectedService = { id: serviceId, duration: duration, name: name };
+        console.log(`🔧 Chocovainilla Wizard: Servicio seleccionado ID ${serviceId}, Duración ${duration} min.`);
+        state.selectedSlot = null;
+        dom.confirmBtn.prop('disabled', true);
+
+        if (state.selectedDate) {
+            fetchAndRenderSlots(state.selectedDate);
+        } else {
+            updateSlotsMessage('Selecciona una fecha para ver los horarios disponibles.');
+        }
+    }
+
+    function updateSlotsMessage(message) {
+        if (dom.slotsWrapper && dom.slotsWrapper.length) {
+            dom.slotsWrapper.html(`<div class="slots-message">${message}</div>`);
+        }
+        if (dom.slotsPagination && dom.slotsPagination.length) {
+            dom.slotsPagination.empty();
+        }
+    }
+
+    function renderSlotsPagination(totalSlots) {
+        if (!dom.slotsPagination || !dom.slotsPagination.length) return;
+        dom.slotsPagination.empty();
+        if (!totalSlots || totalSlots <= 4) {
+            return;
+        }
+        const groups = Math.ceil(totalSlots / 4);
+        let dotsHtml = '';
+        for (let i = 0; i < groups; i++) {
+            dotsHtml += `<span class="dot ${i === 0 ? 'active' : ''}"></span>`;
+        }
+        dom.slotsPagination.html(dotsHtml);
     }
 
     function fetchAndRenderSlots(date) {
-        dom.slotsContainer.html('<p>Cargando horarios...</p>');
+        console.log('⏰ Chocovainilla Wizard: consultando horarios para', date, 'y servicio', state.selectedService.id);
+        updateSlotsMessage('Cargando horarios disponibles...');
         dom.confirmBtn.prop('disabled', true);
         state.selectedSlot = null;
-        
-        // Usamos la función de VAApi que ya existe
+
         VAApi.getAvailableSlots(state.professionalId, state.selectedService.id, date)
             .done(function(response) {
-                if (response.success && response.data.length > 0) {
-                    const slotsHtml = response.data.map(slot => `<button class="time-slot" data-time="${slot}">${slot}</button>`).join('');
-                    dom.slotsContainer.html(`<div class="time-slots">${slotsHtml}</div>`);
+                if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+                    const slotsHtml = response.data.map(slot => `<button type="button" class="time-slot" data-time="${slot}">${slot}</button>`).join('');
+                    dom.slotsWrapper.html(slotsHtml);
+                    renderSlotsPagination(response.data.length);
                 } else {
-                    dom.slotsContainer.html('<p>No hay horarios disponibles para este día.</p>');
+                    updateSlotsMessage('No hay horarios disponibles para esta fecha.');
                 }
             })
             .fail(function() {
-                dom.slotsContainer.html('<p>Ocurrió un error al cargar los horarios.</p>');
+                updateSlotsMessage('Ocurrió un error al cargar los horarios.');
             });
     }
 
@@ -606,7 +658,7 @@ const AgendaWizard = (function ($) {
                     if (window.VA_AgendaModule && typeof window.VA_AgendaModule.reloadDataFromAJAX === 'function') {
                         window.VA_AgendaModule.reloadDataFromAJAX();
                     }
-                    dom.confirmBtn.prop('disabled', false).text('Confirmar Cita');
+                    dom.confirmBtn.prop('disabled', false).text('Confirmar cita');
                     return;
                     location.reload(); // Solución simple por ahora
                 } else {
@@ -616,7 +668,7 @@ const AgendaWizard = (function ($) {
             .fail(function(jqXHR) {
                 const msg = jqXHR?.responseJSON?.message || jqXHR?.responseText || 'Error desconocido al crear la cita';
                 alert('Error: ' + msg);
-                dom.confirmBtn.prop('disabled', false).text('Confirmar Cita');
+                dom.confirmBtn.prop('disabled', false).text('Confirmar cita');
             });
     }
     // <-- FIN DE NUEVAS FUNCIONES: Proyecto Chocovainilla - Paso 1.5/1.6 -->
