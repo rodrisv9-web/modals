@@ -229,7 +229,7 @@
         setupModalEventListeners() {
             const modal = this.container.querySelector('#appointment-modal');
             if (modal) {
-                const closeBtn = modal.querySelector('.modal-close-x');
+                const closeBtn = modal.querySelector('.modal-close-btn');
                 if (closeBtn) {
                     closeBtn.addEventListener('click', () => this.hideModal(modal));
                 }
@@ -372,10 +372,12 @@
         const modalTitle = modal.querySelector('#modal-title');
         const modalBody = modal.querySelector('#modal-details');
         const modalFooter = modal.querySelector('#status-buttons-container');
+        const statusPill = modal.querySelector('#appointment-status-pill');
 
         if (modalTitle) modalTitle.textContent = 'Registrar en Bitácora';
         if (modalBody) modalBody.innerHTML = '<div class="loading-state"><div class="loader"></div><p>Cargando formulario...</p></div>';
         if (modalFooter) modalFooter.innerHTML = '';
+        if (statusPill) statusPill.hidden = true;
 
         try {
             let service = null;
@@ -565,8 +567,33 @@
 
         const modalTitle = modal.querySelector('#modal-title');
         const modalDetails = modal.querySelector('#modal-details');
+        const statusPill = modal.querySelector('#appointment-status-pill');
+        const statusLabel = modal.querySelector('#appointment-status-label');
 
-        if (modalTitle) modalTitle.textContent = appointment.service;
+        if (modalTitle) {
+            modalTitle.textContent = appointment.service;
+        }
+
+        const statusMap = {
+            confirmed: { label: 'Confirmada', className: 'status-pill--confirmed' },
+            completed: { label: 'Completada', className: 'status-pill--completed' },
+            cancelled: { label: 'Cancelada', className: 'status-pill--cancelled' },
+            pending: { label: 'Pendiente', className: 'status-pill--pending' }
+        };
+
+        if (statusPill) {
+            const pillClasses = ['status-pill--confirmed', 'status-pill--completed', 'status-pill--cancelled', 'status-pill--pending'];
+            statusPill.classList.remove(...pillClasses);
+            const statusInfo = statusMap[appointment.status] || { label: 'Sin estado', className: '' };
+            if (statusInfo.className) {
+                statusPill.classList.add(statusInfo.className);
+            }
+            statusPill.hidden = false;
+            statusPill.setAttribute('data-status', appointment.status || 'unknown');
+            if (statusLabel) {
+                statusLabel.textContent = statusInfo.label;
+            }
+        }
 
         const appointmentDate = new Date(appointment.date + 'T12:00:00');
         const formattedDate = appointmentDate.toLocaleDateString('es-ES', {
@@ -577,37 +604,77 @@
         });
 
         if (modalDetails) {
-            modalDetails.innerHTML = `
-                <div class="appointment-details">
-                    <p><strong>Cliente:</strong> ${appointment.client}</p>
-                    <p><strong>Mascota:</strong> ${appointment.pet}</p>
-                    <p><strong>Fecha:</strong> ${formattedDate}</p>
-                    <p><strong>Hora:</strong> ${appointment.start} - ${appointment.end}</p>
-                    ${appointment.phone ? `<p><strong>Teléfono:</strong> ${appointment.phone}</p>` : ''}
-                    ${appointment.email ? `<p><strong>Email:</strong> ${appointment.email}</p>` : ''}
-                    ${appointment.description ? `<p><strong>Notas:</strong> ${appointment.description}</p>` : ''}
+            const buildInfoRows = (rows = []) => rows.map(row => `
+                <div class="info-card-row">
+                    <span class="info-card-icon"><i class="fas ${row.icon}" aria-hidden="true"></i></span>
+                    <span class="info-card-data${row.strong ? ' strong' : ''}">${row.label}</span>
                 </div>
+            `).join('');
+
+            const clientRows = [
+                { icon: 'fa-user', label: appointment.client || 'Cliente sin nombre', strong: true },
+                { icon: 'fa-paw', label: appointment.pet || 'Mascota no especificada' }
+            ];
+
+            if (appointment.phone) {
+                clientRows.push({ icon: 'fa-phone', label: appointment.phone });
+            }
+            if (appointment.email) {
+                clientRows.push({ icon: 'fa-envelope', label: appointment.email });
+            }
+
+            const serviceRows = [
+                { icon: 'fa-scissors', label: appointment.service || 'Servicio no especificado', strong: true },
+                { icon: 'fa-calendar-day', label: formattedDate },
+                { icon: 'fa-clock', label: `${appointment.start} - ${appointment.end}` }
+            ];
+
+            const notesContent = appointment.description
+                ? `<p class="info-card-note">${appointment.description}</p>`
+                : '<p class="info-card-note muted">Sin notas registradas para esta cita.</p>';
+
+            modalDetails.innerHTML = `
+                <article class="info-card">
+                    <p class="info-card-header">CLIENTE Y MASCOTA</p>
+                    <div class="info-card-body">
+                        ${buildInfoRows(clientRows)}
+                    </div>
+                </article>
+                <article class="info-card">
+                    <p class="info-card-header">SERVICIO Y HORARIO</p>
+                    <div class="info-card-body">
+                        ${buildInfoRows(serviceRows)}
+                    </div>
+                </article>
+                <article class="info-card">
+                    <p class="info-card-header">OBSERVACIONES</p>
+                    <div class="info-card-body">
+                        ${notesContent}
+                    </div>
+                </article>
             `;
         }
 
         const statusContainer = modal.querySelector('#status-buttons-container');
         if (statusContainer) {
             const statuses = [
-                { key: 'confirmed', label: 'Confirmar', class: 'confirmed' },
-                { key: 'completed', label: 'Completar', class: 'completed' },
-                { key: 'cancelled', label: 'Cancelar', class: 'cancelled' }
+                { key: 'confirmed', label: 'Confirmar', class: 'confirmed', icon: 'fa-circle-check' },
+                { key: 'completed', label: 'Completar', class: 'completed', icon: 'fa-flag-checkered' },
+                { key: 'cancelled', label: 'Cancelar', class: 'cancelled', icon: 'fa-circle-xmark' }
             ];
 
             statusContainer.innerHTML = statuses.map(statusInfo => {
                 const isCurrentStatus = appointment.status === statusInfo.key;
                 return `
                     <button
+                        type="button"
                         class="status-btn ${isCurrentStatus ? 'disabled' : statusInfo.class}"
                         data-status="${statusInfo.key}"
                         data-appointment-id="${appointment.id}"
                         ${isCurrentStatus ? 'disabled' : ''}
                     >
-                        ${statusInfo.label}
+                        <i class="fas ${statusInfo.icon}" aria-hidden="true"></i>
+                        <span>${statusInfo.label}</span>
                     </button>
                 `;
             }).join('');
